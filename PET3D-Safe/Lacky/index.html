@@ -9,9 +9,9 @@
         .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
         .avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 5px solid #ff4b2b; margin-bottom: 15px; }
         h1 { color: #ff4b2b; margin: 10px 0; }
-        .info { background: #fff5f5; padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left; border-left: 5px solid #ff4b2b; }
-        .btn-whatsapp { background-color: #25d366; color: white; padding: 15px 20px; text-decoration: none; border-radius: 50px; display: block; font-weight: bold; font-size: 1.1em; margin-top: 20px; transition: 0.3s; }
-        .btn-whatsapp:hover { background-color: #128c7e; }
+        .info { background: #fff5f5; padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left; border-left: 5px solid #ff4b2b; font-size: 0.9em; }
+        .btn-whatsapp { background-color: #25d366; color: white; padding: 15px 10px; text-decoration: none; border-radius: 50px; display: block; font-weight: bold; font-size: 1em; margin-top: 15px; }
+        .btn-geo { background-color: #4285F4; color: white; padding: 15px 10px; border: none; border-radius: 50px; display: block; font-weight: bold; font-size: 1em; margin-top: 10px; width: 100%; cursor: pointer; font-family: inherit; }
         .brand { margin-top: 30px; font-size: 0.8em; color: #999; }
     </style>
 </head>
@@ -19,17 +19,41 @@
     <div class="card">
         <img src="foto.jpeg" alt="Foto de la mascota" class="avatar">
         <h1>¡Hola! Soy Lacky</h1>
-        <p><strong>ESTOY PERDIDO</strong> y mi familia me busca con mucha tristeza. Por favor, ayúdame a volver con ellos.</p>
+        <p><strong>ESTOY PERDIDO</strong>. Mi familia me busca. Por favor, ayúdame a volver a casa.</p>
         
         <div class="info">
             <p><strong>📍 Hogar:</strong> Miraflores, Lima</p>
-            <p><strong>⚠️ Nota Médica:</strong> Soy alérgica al pollo y necesito mi medicina diaria.</p>
+            <p><strong>⚠️ Nota:</strong> Soy muy dócil, no tengas miedo.</p>
         </div>
 
-        <a href="https://wa.me/519XXXXXXXX?text=Hola!%20He%20encontrado%20a%20Lacky.%20Te%20comparto%20mi%20ubicación." class="btn-whatsapp">
-            📞 AVISAR A MI FAMILIA
+        <a href="https://wa.me/519XXXXXXXX?text=¡Hola!%20He%20encontrado%20a%20tu%20mascota.%20En%20un%20momento%20te%20envío%20mi%20ubicación." class="btn-whatsapp">
+            📞 AVISAR POR WHATSAPP
         </a>
+
+        <button onclick="enviarUbicacion()" class="btn-geo">
+            📍 COMPARTIR MI UBICACIÓN
+        </button>
     </div>
+
     <div class="brand">Protegido por Pet 3D Safe 🐾</div>
+
+    <script>
+    function enviarUbicacion() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                // Esto genera un link de Google Maps
+                const urlMaps = `https://www.google.com/maps?q=${lat},${lon}`;
+                // Esto abre WhatsApp con el link del mapa (Cambia las X por tu número)
+                window.location.href = `https://wa.me/519992849437?text=¡Aquí me encuentro con tu mascota!:%20${urlMaps}`;
+            }, function() {
+                alert("Por favor, permite el acceso a la ubicación o envíala manualmente por WhatsApp.");
+            });
+        } else {
+            alert("Tu navegador no soporta geolocalización.");
+        }
+    }
+    </script>
 </body>
 </html>
