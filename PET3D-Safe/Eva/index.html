@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PET3D Safe - Lost Pet</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
+        .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
+        .avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 5px solid #ff4b2b; margin-bottom: 15px; }
+        h1 { color: #ff4b2b; margin: 10px 0; }
+        .info { background: #fff5f5; padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left; border-left: 5px solid #ff4b2b; font-size: 0.9em; }
+        .btn-whatsapp { background-color: #25d366; color: white; padding: 15px 10px; text-decoration: none; border-radius: 50px; display: block; font-weight: bold; font-size: 1em; margin-top: 15px; }
+        .btn-geo { background-color: #4285F4; color: white; padding: 15px 10px; border: none; border-radius: 50px; display: block; font-weight: bold; font-size: 1em; margin-top: 10px; width: 100%; cursor: pointer; font-family: inherit; }
+        .brand { margin-top: 30px; font-size: 0.8em; color: #999; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img src="eva.jpg" alt="Eva" class="avatar">
+        <h1>Hi! I'm Eva</h1>
+        <p><strong>I'M LOST</strong>. My family is looking for me, help me to get back home.</p>
+
+        <div class="info">
+            <p><strong>📍 Home:</strong> Berlin</p>
+            <p><strong>⚠️ Note:</strong> I'm very gentle, don't be afraid.</p>
+        </div>
+
+        <a href="https://wa.me/51992849437?text=Hi!%20I%20found%20Eva.%20I%20will%20send%20my%20location%20in%20a%20moment." class="btn-whatsapp">
+            📞 NOTIFY VIA WHATSAPP
+        </a>
+
+        <button onclick="enviarUbicacion()" class="btn-geo">
+            📍 SHARE MY LOCATION
+        </button>
+    </div>
+
+    <div class="brand">Protected by Pet 3D Safe 🐾</div>
+
+    <script>
+    function enviarUbicacion() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const urlMaps = `https://www.google.com/maps?q=${lat},${lon}`;
+                window.location.href = `https://wa.me/51992849437?text=I%20am%20here%20with%20Eva!:%20${urlMaps}`;
+            }, function() {
+                alert("Please enable location access or send it manually via WhatsApp.");
+            });
+        } else {
+            alert("Your browser does not support geolocation.");
+        }
+    }
+    </script>
+</body>
+</html>
