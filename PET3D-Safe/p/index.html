@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet3D Safe - Sistema Inteligente</title>
+    <title>Pet3D Safe - Registro</title>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -29,16 +28,12 @@
             onValue(petRef, (snapshot) => {
                 const data = snapshot.val();
                 document.getElementById('loading').style.display = 'none';
-                
                 if (data && data.nombre) {
-                    // MODO PERFIL: La mascota ya existe
                     document.getElementById('profile').style.display = 'block';
                     document.getElementById('registerForm').style.display = 'none';
                     document.getElementById('petName').innerText = data.nombre;
-                    document.getElementById('petStatus').innerText = data.estado || "¡Ayúdame a volver a casa!";
                     document.getElementById('btnWa').href = "https://wa.me/" + data.whatsapp;
                 } else {
-                    // MODO REGISTRO: El ID es nuevo
                     document.getElementById('profile').style.display = 'none';
                     document.getElementById('registerForm').style.display = 'block';
                     document.getElementById('displayId').innerText = petId;
@@ -46,7 +41,6 @@
             });
         }
 
-        // Función para guardar el registro
         window.registrarMascota = function() {
             const nombre = document.getElementById('regNombre').value;
             const whatsapp = document.getElementById('regWhatsapp').value;
@@ -55,36 +49,43 @@
                     nombre: nombre,
                     whatsapp: whatsapp,
                     estado: "¡Ayúdame a volver a casa!"
-                }).then(() => alert("¡Mascota registrada con éxito!"));
+                }).then(() => {
+                    alert("¡Mascota registrada con éxito!");
+                    location.reload();
+                });
             } else {
                 alert("Por favor llena todos los campos");
             }
         }
     </script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #1a1a1a; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .card { background: #2a2a2a; padding: 25px; border-radius: 20px; text-align: center; width: 90%; max-width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; box-sizing: border-box; }
-        .btn { display: block; background: #25D366; color: white; text-decoration: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 15px; cursor: pointer; border: none; width: 100%; }
-        #profile, #registerForm { display: none; }
-        .id-badge { background: #444; padding: 5px 10px; border-radius: 5px; font-size: 0.8em; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .logo { font-size: 2em; font-weight: bold; color: #007bff; margin-bottom: 20px; }
+        .card { background: #2a2a2a; padding: 30px; border-radius: 25px; text-align: center; width: 100%; max-width: 350px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); border: 1px solid #444; }
+        h2 { margin-top: 0; color: #f8f9fa; }
+        input { width: 100%; padding: 15px; margin: 12px 0; border-radius: 12px; border: 1px solid #444; background: #1a1a1a; color: white; font-size: 1em; }
+        .btn { display: block; background: #007bff; color: white; text-decoration: none; padding: 16px; border-radius: 12px; font-weight: bold; margin-top: 20px; cursor: pointer; border: none; width: 100%; transition: 0.3s; }
+        .btn:hover { background: #0056b3; transform: translateY(-2px); }
+        .btn-wa { background: #25D366; }
+        .id-badge { background: #444; padding: 4px 12px; border-radius: 50px; font-size: 0.7em; vertical-align: middle; color: #bbb; }
     </style>
 </head>
 <body>
+    <div class="logo">PET3D SAFE</div>
     <div id="loading" class="card"><h2>Cargando...</h2></div>
 
-    <div id="profile" class="card">
+    <div id="profile" class="card" style="display:none;">
         <h1 id="petName"></h1>
-        <p id="petStatus"></p>
-        <a id="btnWa" href="#" class="btn">Contactar Dueño</a>
+        <p>¡Hola! Soy una mascota protegida.</p>
+        <a id="btnWa" href="#" class="btn btn-wa">Contactar a mi dueño</a>
     </div>
 
-    <div id="registerForm" class="card">
-        <h2>Nueva Medalla <span class="id-badge" id="displayId"></span></h2>
-        <p>Esta medalla no tiene dueño aún. ¡Regístrala!</p>
+    <div id="registerForm" class="card" style="display:none;">
+        <h2>Activar Medalla <span class="id-badge" id="displayId"></span></h2>
+        <p>Registra los datos para proteger a tu mascota.</p>
         <input type="text" id="regNombre" placeholder="Nombre de la mascota">
         <input type="number" id="regWhatsapp" placeholder="WhatsApp (ej: 51999...)">
-        <button onclick="registrarMascota()" class="btn" style="background: #007bff;">Activar Medalla</button>
+        <button onclick="registrarMascota()" class="btn">Vincular Medalla</button>
     </div>
 </body>
 </html>
