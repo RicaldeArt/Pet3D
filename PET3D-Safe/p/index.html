@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PET3D Safe - Perfil</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background-color: #f4f7f6; padding: 20px; }
+        .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
+        .loader { border: 5px solid #f3f3f3; border-top: 5px solid #ff4b2b; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="loading" class="card">
+        <div class="loader"></div>
+        <p>Buscando información de la mascota...</p>
+    </div>
+
+    <div id="profile" class="card hidden">
+        <h1 id="pet-name">Cargando...</h1>
+        <p id="pet-status"></p>
+        <hr>
+        <p><strong>ID de Medalla:</strong> <span id="pet-id"></span></p>
+        <p style="color: #ff4b2b; font-weight: bold;">[Aquí aparecerán los botones de WhatsApp y GPS automáticamente]</p>
+    </div>
+
+    <script>
+        // Este código lee el ID de la URL (ejemplo: ?id=001)
+        const params = new URLSearchParams(window.location.search);
+        const petId = params.get('id');
+
+        if (petId) {
+            // Por ahora solo mostramos el ID en pantalla para probar
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('profile').classList.remove('hidden');
+                document.getElementById('pet-id').innerText = petId;
+                document.getElementById('pet-name').innerText = "Medalla Detectada";
+                document.getElementById('pet-status').innerText = "Estamos listos para conectar este ID con Firebase.";
+            }, 1500);
+        } else {
+            document.getElementById('loading').innerHTML = "<h1>Error</h1><p>No se detectó ningún ID de medalla.</p>";
+        }
+    </script>
+</body>
+</html>
