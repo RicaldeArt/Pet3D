@@ -3,89 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet3D Safe - Registro</title>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCgAXgh5ETT6xg65k7iZZhRgSwq8TBXBiC",
-            authDomain: "pet3d-safe.firebaseapp.com",
-            databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com",
-            projectId: "pet3d-safe",
-            storageBucket: "pet3d-safe.appspot.com",
-            messagingSenderId: "707121344486",
-            appId: "1:707121344486:web:01f9fa4ce84462b3233027"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const params = new URLSearchParams(window.location.search);
-        const petId = params.get('id');
-
-        if (petId) {
-            const petRef = ref(db, 'mascotas/' + petId);
-            onValue(petRef, (snapshot) => {
-                const data = snapshot.val();
-                document.getElementById('loading').style.display = 'none';
-                if (data && data.nombre) {
-                    document.getElementById('profile').style.display = 'block';
-                    document.getElementById('registerForm').style.display = 'none';
-                    document.getElementById('petName').innerText = data.nombre;
-                    document.getElementById('btnWa').href = "https://wa.me/" + data.whatsapp;
-                } else {
-                    document.getElementById('profile').style.display = 'none';
-                    document.getElementById('registerForm').style.display = 'block';
-                    document.getElementById('displayId').innerText = petId;
-                }
-            });
-        }
-
-        window.registrarMascota = function() {
-            const nombre = document.getElementById('regNombre').value;
-            const whatsapp = document.getElementById('regWhatsapp').value;
-            if(nombre && whatsapp) {
-                set(ref(db, 'mascotas/' + petId), {
-                    nombre: nombre,
-                    whatsapp: whatsapp,
-                    estado: "¡Ayúdame a volver a casa!"
-                }).then(() => {
-                    alert("¡Mascota registrada con éxito!");
-                    location.reload();
-                });
-            } else {
-                alert("Por favor llena todos los campos");
-            }
-        }
-    </script>
+    <title>Pet3D Safe - Identificación</title>
     <style>
-        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .logo { font-size: 2em; font-weight: bold; color: #007bff; margin-bottom: 20px; }
-        .card { background: #2a2a2a; padding: 30px; border-radius: 25px; text-align: center; width: 100%; max-width: 350px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); border: 1px solid #444; }
-        h2 { margin-top: 0; color: #f8f9fa; }
-        input { width: 100%; padding: 15px; margin: 12px 0; border-radius: 12px; border: 1px solid #444; background: #1a1a1a; color: white; font-size: 1em; }
-        .btn { display: block; background: #007bff; color: white; text-decoration: none; padding: 16px; border-radius: 12px; font-weight: bold; margin-top: 20px; cursor: pointer; border: none; width: 100%; transition: 0.3s; }
-        .btn:hover { background: #0056b3; transform: translateY(-2px); }
-        .btn-wa { background: #25D366; }
-        .id-badge { background: #444; padding: 4px 12px; border-radius: 50px; font-size: 0.7em; vertical-align: middle; color: #bbb; }
+        body {
+            /* Papel tapiz de huellitas sutil */
+            background-color: #f8f9fa;
+            background-image: url('https://www.transparenttextures.com/patterns/paws.png');
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            border: 2px solid #e0e0e0;
+        }
+
+        /* El icono de WiFi (3 tubitos curvos) como marca de agua */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="lightgrey" opacity="0.15"><path d="M12 18c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0-11c3.04 0 5.79 1.23 7.78 3.22l-1.42 1.42c-1.63-1.62-3.87-2.64-6.36-2.64s-4.73 1.02-6.36 2.64l-1.42-1.42c1.99-1.99 4.74-3.22 7.78-3.22zm0-4c5.25 0 10.01 2.13 13.44 5.56l-1.42 1.42C20.88 4.12 16.69 2 12 2S3.12 4.12.98 6.98L-.44 5.56C2.99 2.13 7.75 0 12 0z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 0;
+        }
+
+        .content { position: relative; z-index: 1; }
+
+        .pet-photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid #ffcc00; /* Color alegre */
+            object-fit: cover;
+            margin-top: 10px;
+        }
+
+        .status-lost {
+            background: #ff4757;
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .info-box {
+            text-align: left;
+            background: #fdfdfd;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border: 1px solid #eee;
+        }
+
+        .info-box p { margin: 8px 0; color: #444; }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+
+        .btn:active { transform: scale(0.98); }
+        .btn-wsp { background-color: #25d366; }
+        .btn-gps { background-color: #3867d6; }
+
     </style>
 </head>
 <body>
-    <div class="logo">PET3D SAFE</div>
-    <div id="loading" class="card"><h2>Cargando...</h2></div>
 
-    <div id="profile" class="card" style="display:none;">
-        <h1 id="petName"></h1>
-        <p>¡Hola! Soy una mascota protegida.</p>
-        <a id="btnWa" href="#" class="btn btn-wa">Contactar a mi dueño</a>
-    </div>
+<div class="card">
+    <div class="content">
+        <img src="https://via.placeholder.com/150" alt="Mascota" class="pet-photo">
+        
+        <div><span class="status-lost">🚨 ESTADO: PERDIDO</span></div>
 
-    <div id="registerForm" class="card" style="display:none;">
-        <h2>Activar Medalla <span class="id-badge" id="displayId"></span></h2>
-        <p>Registra los datos para proteger a tu mascota.</p>
-        <input type="text" id="regNombre" placeholder="Nombre de la mascota">
-        <input type="number" id="regWhatsapp" placeholder="WhatsApp (ej: 51999...)">
-        <button onclick="registrarMascota()" class="btn">Vincular Medalla</button>
+        <h2 style="margin: 5px 0; color: #2d3436;">Nombre de Mascota</h2>
+        
+        <div class="info-box">
+            <p><strong>📍 Distrito:</strong> <span id="distrito">Cargando...</span></p>
+            <p><strong>⚠️ Salud:</strong> <span id="salud">Cargando...</span></p>
+        </div>
+
+        <a href="#" id="link-wsp" class="btn btn-wsp">
+            💬 WhatsApp del Dueño
+        </a>
+
+        <a href="#" onclick="alert('Enviando ubicación...')" class="btn btn-gps">
+            📍 Compartir mi Ubicación
+        </a>
     </div>
+</div>
+
+<script>
+    // Aquí es donde leeremos el ?id= de la URL que grabaste en el chip
+    const urlParams = new URLSearchParams(window.location.search);
+    const petId = urlParams.get('id');
+
+    // Por ahora, simulamos los datos. 
+    // Luego esto leerá de tu lista de 1000 perros.
+    if(petId) {
+        document.getElementById('distrito').innerText = "Distrito Ejemplo " + petId;
+        document.getElementById('salud').innerText = "Ninguna condición especial";
+    }
+</script>
+
 </body>
 </html>
