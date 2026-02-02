@@ -1,150 +1,90 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet3D Safe - Eva</title>
+    <title>Pet3D Safe - Identification</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 20px 0;
+            background-color: #eef2f7;
+            background-image: url("https://www.transparenttextures.com/patterns/paws.png");
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0;
         }
-
-        /* Contenedor del Logo */
-        .logo-container {
-            margin-bottom: 15px;
-            text-align: center;
-            min-height: 50px; /* Evita que el contenido salte si el logo tarda en cargar */
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            width: 85%; max-width: 380px; padding: 25px; text-align: center; position: relative;
         }
-        .logo-img {
-            width: 140px; 
-            height: auto;
-            display: block;
+        .wifi-bg {
+            position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
+            width: 250px; height: 250px; opacity: 0.05; z-index: 0;
         }
-
-        .container {
-            background-color: #ffffff;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            padding-bottom: 30px;
-            overflow: hidden;
+        .content { position: relative; z-index: 1; }
+        .logo-pet3d { width: 180px; height: auto; margin-bottom: 15px; }
+        .pet-photo {
+            width: 150px; height: 150px; border-radius: 50%; border: 5px solid #ffcc00;
+            object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-
-        .profile-img {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 5px solid #ffcc00; /* Borde amarillo de Eva */
-            margin: 25px auto 10px;
-            object-fit: cover;
-            display: block;
-            background-color: #eee;
+        .pet-name { margin: 15px 0 5px 0; color: #2d3436; font-size: 30px; font-weight: bold; }
+        .info-box {
+            text-align: left; background: rgba(240, 248, 255, 0.8);
+            padding: 18px; border-radius: 20px; margin: 15px 0; border: 1px solid #d1d8e0;
         }
-
-        h1 {
-            color: #333;
-            font-size: 28px;
-            margin: 10px 0;
-        }
-
-        .info-card {
-            background-color: #f8faff;
-            border: 1px solid #e1e8ed;
-            border-radius: 15px;
-            margin: 15px 25px 25px;
-            padding: 15px;
-            text-align: left;
-        }
-
-        .info-line {
-            margin: 8px 0;
-            color: #444;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-        }
-
+        .info-box p { margin: 8px 0; color: #2f3542; font-size: 15px; }
         .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 12px 25px;
-            padding: 14px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: bold;
-            color: #ffffff;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            padding: 14px; border-radius: 12px; text-decoration: none; color: white; font-weight: bold; margin-bottom: 10px;
+            cursor: pointer; border: none; width: 100%; font-family: inherit;
         }
-
-        .btn-whatsapp { background-color: #2ecf5d; }
-        .btn-location { background-color: #4c77ea; }
-
-        .footer {
-            margin-top: 25px;
-            font-size: 13px;
-            color: #888;
-            font-weight: bold;
-        }
+        .btn-wsp { background-color: #25d366; }
+        .btn-gps { background-color: #4b7bec; }
+        .footer-brand { margin-top: 20px; font-size: 12px; color: #a0a0a0; font-weight: bold; }
     </style>
 </head>
 <body>
+    <svg class="wifi-bg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12,21L15.6,17.4C14.6,16.4 13.4,16 12,16C10.6,16 9.4,16.4 8.4,17.4L12,21M12,13C14.7,13 17.1,14.1 19,15.9L20.4,14.5C18.1,12.3 15.2,11 12,11C8.8,11 5.9,12.3 3.6,14.5L5,15.9C6.9,14.1 9.3,13 12,13M12,9C16.1,9 19.8,10.6 22.6,13.3L24,11.9C20.8,8.8 16.6,7 12,7C7.4,7 3.2,8.8 0,11.9L1.4,13.3C4.2,10.6 7.9,9 12,9Z"/>
+    </svg>
 
-    <div class="logo-container">
-        <img src="../logo-web.png" alt="Pet3D Logo" class="logo-img" onerror="this.src='logo-web.png';">
-    </div>
+    <div class="card">
+        <div class="content">
+            <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" alt="Pet3D Logo" class="logo-pet3d">
+            <br>
+            <img src="Eva.jpeg" class="pet-photo">
 
-    <div class="container">
-        <img src="Eva.jpeg" alt="Eva" class="profile-img">
+            <div class="pet-name">Eva</div>
 
-        <h1>Hi! I'm Eva</h1>
+            <div class="info-box">
+                <p><strong>📍 Home:</strong> Berlin</p>
+                <p><strong>⚠️ Status:</strong> Hm5in</p>
+                <p><strong>📝 Note:</strong> I am very fearful :( .</p>
+            </div>
 
-        <div class="info-card">
-            <div class="info-line">📍 <strong>Home:</strong> Berlin</div>
-            <div class="info-line">⚠️ <strong>Hm5in</strong></div>
-            <div class="info-line">🗒️ <strong>Note:</strong> I am very fearful :( .</div>
-        </div>
+            <a href="https://wa.me/51940036564?text=Hello, I found Eva" class="btn btn-wsp">Notify via WhatsApp</a>
+            
+            <button onclick="sendLocation()" class="btn btn-gps">Share my Location</button>
 
-        <a href="https://wa.me/51940036564?text=Hola,%20encontré%20a%20Eva" class="btn btn-whatsapp">
-            Avisar por WhatsApp
-        </a>
-
-        <button onclick="compartirUbicacion()" class="btn btn-location" style="width: calc(100% - 50px);">
-            📍 Compartir mi Ubicación
-        </button>
-
-        <div class="footer">
-            🛡️ PROTEGIDO POR PET3D 🐾
+            <div class="footer-brand">🛡️ PROTECTED BY PET3D</div>
         </div>
     </div>
 
-<script>
-    function compartirUbicacion() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                // Enlace directo a Google Maps
-                const urlMapas = `https://www.google.com/maps?q=${lat},${lon}`;
-                const mensaje = encodeURIComponent("Hola, encontré a Eva. Mi ubicación actual es: " + urlMapas);
-                window.location.href = "https://wa.me/51940036564?text=" + mensaje;
-            }, function() {
-                alert("Por favor, activa el GPS para enviar la ubicación.");
-            });
+    <script>
+        function sendLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                    const message = encodeURIComponent("Hello, I found Eva. My current location is: " + mapUrl);
+                    window.location.href = "https://wa.me/51940036564?text=" + message;
+                }, function() {
+                    alert("Please enable GPS to share location.");
+                });
+            } else {
+                alert("Browser does not support geolocation.");
+            }
         }
-    }
-</script>
-
+    </script>
 </body>
 </html>
