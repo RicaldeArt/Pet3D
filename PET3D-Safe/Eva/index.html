@@ -15,10 +15,11 @@
             padding: 20px 0;
         }
 
-        /* Contenedor del Logo Superior */
+        /* Contenedor del Logo */
         .logo-container {
             margin-bottom: 15px;
             text-align: center;
+            min-height: 50px; /* Evita que el contenido salte si el logo tarda en cargar */
         }
         .logo-img {
             width: 140px; 
@@ -45,6 +46,7 @@
             margin: 25px auto 10px;
             object-fit: cover;
             display: block;
+            background-color: #eee;
         }
 
         h1 {
@@ -53,7 +55,6 @@
             margin: 10px 0;
         }
 
-        /* Cuadro de información estilo Minnie */
         .info-card {
             background-color: #f8faff;
             border: 1px solid #e1e8ed;
@@ -89,7 +90,6 @@
 
         .btn-whatsapp { background-color: #2ecf5d; }
         .btn-location { background-color: #4c77ea; }
-        .btn:active { transform: scale(0.98); }
 
         .footer {
             margin-top: 25px;
@@ -102,7 +102,7 @@
 <body>
 
     <div class="logo-container">
-        <img src="../logo-web.png" alt="Pet3D Logo" class="logo-img">
+        <img src="../logo-web.png" alt="Pet3D Logo" class="logo-img" onerror="this.src='logo-web.png';">
     </div>
 
     <div class="container">
@@ -117,15 +117,15 @@
         </div>
 
         <a href="https://wa.me/51940036564?text=Hola,%20encontré%20a%20Eva" class="btn btn-whatsapp">
-            Notify via WhatsApp
+            Avisar por WhatsApp
         </a>
 
         <button onclick="compartirUbicacion()" class="btn btn-location" style="width: calc(100% - 50px);">
-            📍 Share my Ubicación
+            📍 Compartir mi Ubicación
         </button>
 
         <div class="footer">
-            🛡️ PROTEGIDO Pet 3D Safe 🐾
+            🛡️ PROTEGIDO POR PET3D 🐾
         </div>
     </div>
 
@@ -135,14 +135,13 @@
             navigator.geolocation.getCurrentPosition(function(position) {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                const urlMapas = "https://www.google.com/maps?q=" + lat + "," + lon;
+                // Enlace directo a Google Maps
+                const urlMapas = `https://www.google.com/maps?q=${lat},${lon}`;
                 const mensaje = encodeURIComponent("Hola, encontré a Eva. Mi ubicación actual es: " + urlMapas);
                 window.location.href = "https://wa.me/51940036564?text=" + mensaje;
             }, function() {
                 alert("Por favor, activa el GPS para enviar la ubicación.");
             });
-        } else {
-            alert("Tu navegador no soporta geolocalización.");
         }
     }
 </script>
