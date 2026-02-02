@@ -1,26 +1,118 @@
-import time
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVA - Asistente Pet3D</title>
+    <style>
+        :root {
+            --accent-pink: #ff4d94; /* Tono Minnie mejorado */
+            --pet-blue: #2daae1;   /* Identidad Pet3D */
+            --soft-bg: #fdfdfd;
+        }
 
-class EvaPet3D:
-    def __init__(self):
-        self.version = "2.2 - Minnie Style"
-        self.contacto = "+51 940 036 564"
-        self.nombre = "EVA"
-        self.empresa = "Pet3D"
-        
-    def saludo_estilizado(self):
-        print(f"✨ [{self.nombre}]: ¡Hola! Soy tu asistente de {self.empresa}. ✨")
-        print(f"🐾 Estoy lista para ayudarte con tus diseños 3D.")
-        print(f"📞 Contacto actualizado: {self.contacto}")
-        print("-" * 40)
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fce4ec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    def procesar_pedido(self, item):
-        print(f"🎨 {self.nombre} está modelando tu {item} al estilo Pet3D...")
-        time.sleep(1) # Simulación de procesamiento
-        print(f"✅ ¡Listo! Si tienes dudas, escríbenos al {self.contacto}")
+        .eva-container {
+            background: var(--soft-bg);
+            width: 380px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            overflow: hidden;
+            text-align: center;
+            border: 4px solid white;
+        }
 
-# --- EJECUCIÓN DEL SISTEMA ---
-eva = EvaPet3D()
-eva.saludo_estilizado()
+        .header-gradient {
+            background: linear-gradient(135deg, var(--accent-pink), var(--pet-blue));
+            height: 100px;
+            position: relative;
+        }
 
-# Ejemplo de acción
-# eva.procesar_pedido("Prótesis Canina Personalizada")
+        /* VINCULACIÓN DE LA FOTO Eva.jpg */
+        .eva-profile-img {
+            width: 140px;
+            height: 140px;
+            background: #fff;
+            border-radius: 50%;
+            border: 6px solid white;
+            position: relative;
+            margin-top: -70px; /* Sube la foto al centro del gradiente */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        .content {
+            padding: 20px 30px 30px;
+        }
+
+        h2 {
+            margin: 10px 0 5px;
+            color: #333;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+        }
+
+        .badge {
+            background: var(--pet-blue);
+            color: white;
+            padding: 4px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .contact-card {
+            background: #f9f9f9;
+            border-radius: 20px;
+            padding: 15px;
+            border: 2px solid #eeeeee;
+        }
+
+        .contact-label {
+            display: block;
+            font-size: 0.75em;
+            color: var(--accent-pink);
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .phone-link {
+            font-size: 1.4em;
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 800;
+            display: block;
+        }
+
+        .phone-link:hover {
+            color: var(--pet-blue);
+        }
+
+        .footer-tag {
+            margin-top: 20px;
+            font-size: 0.7em;
+            color: #bbb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="eva-container">
