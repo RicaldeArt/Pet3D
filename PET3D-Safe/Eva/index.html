@@ -6,7 +6,7 @@
     <title>Pet3D Safe - Eva</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f0f2f5;
             display: flex;
             flex-direction: column;
@@ -15,14 +15,15 @@
             padding: 20px 0;
         }
 
-        /* Ajuste de la ruta del logo */
+        /* Contenedor del Logo Superior */
         .logo-container {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
         }
         .logo-img {
-            width: 160px; 
+            width: 140px; 
             height: auto;
+            display: block;
         }
 
         .container {
@@ -30,7 +31,7 @@
             width: 90%;
             max-width: 400px;
             border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
             padding-bottom: 30px;
             overflow: hidden;
@@ -40,8 +41,8 @@
             width: 180px;
             height: 180px;
             border-radius: 50%;
-            border: 5px solid #ffcc00; 
-            margin: 30px auto 10px;
+            border: 5px solid #ffcc00; /* Borde amarillo de Eva */
+            margin: 25px auto 10px;
             object-fit: cover;
             display: block;
         }
@@ -52,6 +53,7 @@
             margin: 10px 0;
         }
 
+        /* Cuadro de información estilo Minnie */
         .info-card {
             background-color: #f8faff;
             border: 1px solid #e1e8ed;
@@ -65,6 +67,8 @@
             margin: 8px 0;
             color: #444;
             font-size: 15px;
+            display: flex;
+            align-items: center;
         }
 
         .btn {
@@ -80,10 +84,12 @@
             font-size: 16px;
             border: none;
             cursor: pointer;
+            transition: 0.2s;
         }
 
         .btn-whatsapp { background-color: #2ecf5d; }
         .btn-location { background-color: #4c77ea; }
+        .btn:active { transform: scale(0.98); }
 
         .footer {
             margin-top: 25px;
@@ -130,11 +136,13 @@
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 const urlMapas = "https://www.google.com/maps?q=" + lat + "," + lon;
-                const mensaje = encodeURIComponent("Hola, encontré a Eva. Mi ubicación es: " + urlMapas);
+                const mensaje = encodeURIComponent("Hola, encontré a Eva. Mi ubicación actual es: " + urlMapas);
                 window.location.href = "https://wa.me/51940036564?text=" + mensaje;
             }, function() {
-                alert("Por favor activa el GPS.");
+                alert("Por favor, activa el GPS para enviar la ubicación.");
             });
+        } else {
+            alert("Tu navegador no soporta geolocalización.");
         }
     }
 </script>
