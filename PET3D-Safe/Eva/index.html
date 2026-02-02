@@ -6,98 +6,129 @@
     <title>Pet3D Safe - Eva</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: #f0f2f5;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             margin: 0;
-            padding: 40px 0;
+            padding: 20px 0;
         }
+
+        /* Estilo del Logo Superior */
+        .logo-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .logo-img {
+            width: 150px; /* Ajuste según tamaño del logo Pet3D */
+            height: auto;
+        }
+
         .container {
             background-color: #ffffff;
             width: 90%;
             max-width: 400px;
             border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
             padding-bottom: 30px;
             overflow: hidden;
         }
+
         .profile-img {
             width: 180px;
             height: 180px;
             border-radius: 50%;
-            border: 5px solid #ff4d4d;
+            border: 5px solid #ffcc00; /* Borde amarillo como en la foto de Eva */
             margin: 30px auto 10px;
             object-fit: cover;
             display: block;
         }
+
         h1 {
-            color: #ff4d4d;
+            color: #333;
             font-size: 28px;
             margin: 15px 0 10px;
         }
-        .info-box {
-            background-color: #fff5f5;
-            border-left: 5px solid #ff4d4d;
-            margin: 15px 20px 25px;
+
+        /* Cuadro de información estilo Minnie */
+        .info-card {
+            background-color: #f8faff;
+            border: 1px solid #e1e8ed;
+            border-radius: 15px;
+            margin: 15px 25px 25px;
             padding: 15px;
             text-align: left;
-            border-radius: 8px;
         }
-        .info-item {
-            margin: 5px 0;
+
+        .info-line {
+            margin: 8px 0;
             color: #444;
-            font-size: 14px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
         }
+
+        .info-line span { margin-right: 10px; }
+
         .btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 12px 20px;
+            margin: 12px 25px;
             padding: 14px;
-            border-radius: 50px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: bold;
             color: #ffffff;
             font-size: 16px;
             border: none;
             cursor: pointer;
+            transition: 0.3s;
         }
-        .btn-whatsapp { background-color: #25d366; }
-        .btn-location { background-color: #4285f4; }
-        
+
+        .btn-whatsapp { background-color: #2ecf5d; }
+        .btn-location { background-color: #4c77ea; }
+        .btn:active { transform: scale(0.97); }
+
         .footer {
             margin-top: 25px;
-            font-size: 12px;
-            color: #aaaaaa;
+            font-size: 13px;
+            color: #888;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <img src="Eva.jpeg" alt="Eva" class="profile-img">
-
-    <h1>Hi! I'm Eva</h1>
-
-    <div class="info-box">
-        <div class="info-item">📍 <strong>Home:</strong> Berlin</div>
-        <div class="info-item">⚠️ <strong>Note:</strong> I am very fearful :( .</div>
+    <div class="logo-container">
+        <img src="logo.png" alt="Pet3D Logo" class="logo-img">
     </div>
 
-    <a href="https://wa.me/51940036564?text=Hola,%20encontré%20a%20Eva" class="btn btn-whatsapp">
-        📞 NOTIFY VIA WHATSAPP
-    </a>
+    <div class="container">
+        <img src="Eva.jpeg" alt="Eva" class="profile-img">
 
-    <button onclick="compartirUbicacion()" class="btn btn-location" style="width: calc(100% - 40px);">
-        📍 SHARE MY LOCATION
-    </button>
+        <h1>Hi! I'm Eva</h1>
 
-    <div class="footer">
-        Protected by Pet 3D Safe 🐾
+        <div class="info-card">
+            <div class="info-line">📍 <span><strong>Home:</strong> Berlin</span></div>
+            <div class="info-line">⚠️ <span><strong>Hm5in</strong></span></div>
+            <div class="info-line">🗒️ <span><strong>Note:</strong> I am very fearful :( .</span></div>
+        </div>
+
+        <a href="https://wa.me/51940036564?text=Hola,%20encontré%20a%20Eva" class="btn btn-whatsapp">
+            Notify via WhatsApp
+        </a>
+
+        <button onclick="compartirUbicacion()" class="btn btn-location" style="width: calc(100% - 50px);">
+            📍 Share my Ubicación
+        </button>
+
+        <div class="footer">
+            🛡️ PROTEGIDO Pet 3D Safe 🐾
+        </div>
     </div>
-</div>
 
 <script>
     function compartirUbicacion() {
@@ -106,13 +137,13 @@
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 const urlMapas = "https://www.google.com/maps?q=" + lat + "," + lon;
-                const mensaje = encodeURIComponent("Hola, encontré a Eva. Mi ubicación es: " + urlMapas);
+                const mensaje = encodeURIComponent("Hola, encontré a Eva. Mi ubicación actual es: " + urlMapas);
                 window.location.href = "https://wa.me/51940036564?text=" + mensaje;
             }, function(error) {
-                alert("Por favor activa el GPS para compartir la ubicación.");
+                alert("Por favor, activa el GPS para poder enviar la ubicación exacta.");
             });
         } else {
-            alert("Tu navegador no permite compartir la ubicación.");
+            alert("Tu navegador no soporta la función de ubicación.");
         }
     }
 </script>
