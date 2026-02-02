@@ -1,72 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EVA Pet3D</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet3D Safe - Eva</title>
     <style>
         body {
-            background-color: #fce4ec; /* Fondo rosa suave para que no se vea blanco */
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            padding-top: 50px;
             margin: 0;
         }
-        .tarjeta {
-            background: white;
-            width: 320px;
-            padding: 20px;
-            border-radius: 25px;
+        .container {
+            background-color: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            border: 4px solid #ff4d94; /* Borde rosa fuerte */
+            padding-bottom: 30px;
         }
-        .contenedor-foto {
-            width: 120px;
-            height: 120px;
-            background-color: #ffc1e3; /* Fondo de respaldo si no carga la foto */
+        .profile-img {
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            margin: 0 auto 15px;
-            overflow: hidden;
-            border: 3px solid #ff4d94;
-        }
-        .contenedor-foto img {
-            width: 100%;
-            height: 100%;
+            border: 5px solid #ff4d4d;
+            margin-top: 30px;
             object-fit: cover;
         }
-        h1 { color: #333; margin: 10px 0; font-size: 24px; }
-        p { color: #666; font-size: 14px; line-height: 1.4; }
-        .numero {
-            display: block;
-            background: #2daae1;
-            color: white;
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 10px;
+        h1 {
+            color: #ff4d4d;
+            font-size: 28px;
+            margin: 20px 0 10px;
+        }
+        .lost-text {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            background-color: #fff5f5;
+            border-left: 5px solid #ff4d4d;
+            margin: 0 20px 25px;
+            padding: 15px;
+            text-align: left;
+            border-radius: 5px;
+        }
+        .info-item {
+            margin: 5px 0;
+            color: #555;
+            font-size: 14px;
+        }
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 20px;
+            padding: 12px;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 18px;
+            color: white;
+            font-size: 16px;
+        }
+        .btn-whatsapp { background-color: #25d366; }
+        .btn-location { background-color: #4285f4; }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
         }
     </style>
 </head>
 <body>
 
-    <div class="tarjeta">
-        <div class="contenedor-foto">
-            <img src="Eva.jpg" alt="EVA">
-        </div>
-        
-        <h1>EVA</h1>
-        <p>Asistente Virtual de <strong>Pet3D</strong><br>Estilo Minnie v2.2</p>
-        
-        <p>¿Necesitas ayuda con tu diseño?</p>
-        
-        <a href="tel:+51940036564" class="numero">
-            📞 51 940 036 564
-        </a>
+<div class="container">
+    <img src="Eva.jpg" alt="Hi! I'm Eva" class="profile-img">
+
+    <h1>Hi! I'm Eva</h1>
+    <p class="lost-text"><strong>I'M LOST.</strong> My family is looking for me, help me to get back home.</p>
+
+    <div class="info-box">
+        <div class="info-item">📍 <strong>Home:</strong> Berlin</div>
+        <div class="info-item">⚠️ <strong>Note:</strong> I am very fearful :( .</div>
     </div>
+
+    <a href="https://wa.me/51940036564?text=Hola,%20encontré%20a%20Eva" class="btn btn-whatsapp">
+        📞 NOTIFY VIA WHATSAPP
+    </a>
+
+    <a href="#" class="btn btn-location">
+        📍 SHARE MY LOCATION
+    </a>
+
+    <div class="footer">
+        Protected by Pet 3D Safe 🐾
+    </div>
+</div>
 
 </body>
 </html>
