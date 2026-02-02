@@ -6,7 +6,6 @@
     <title>Pet3D Safe - Identificación</title>
     <style>
         body {
-            /* Papel tapiz de huellitas - Reforzado */
             background-color: #eef2f7;
             background-image: url("https://www.transparenttextures.com/patterns/paws.png");
             font-family: 'Segoe UI', Roboto, sans-serif;
@@ -23,77 +22,81 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             width: 85%;
             max-width: 380px;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
             position: relative;
-            border: 3px solid #ffffff;
         }
 
-        /* Icono WiFi (3 tubos curvos) como marca de agua CENTRAL */
+        /* WiFi de 3 tubos sutil */
         .wifi-bg {
             position: absolute;
-            top: 50%;
+            top: 55%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 250px;
             height: 250px;
             z-index: 0;
-            opacity: 0.1; /* Ajusta este número (0.1 a 0.3) para que sea más o menos visible */
+            opacity: 0.05;
         }
 
         .content { position: relative; z-index: 1; }
 
+        .logo-top {
+            width: 80px;
+            margin-bottom: 10px;
+        }
+
         .pet-photo {
-            width: 160px;
-            height: 160px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            border: 6px solid #ffcc00;
+            border: 5px solid #ffcc00;
             object-fit: cover;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .status-badge {
-            background: #ff4757;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 25px;
+        .pet-name {
+            margin: 15px 0 5px 0; 
+            color: #2d3436; 
+            font-size: 30px;
             font-weight: bold;
-            font-size: 14px;
-            display: inline-block;
-            margin: 15px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .info-box {
             text-align: left;
-            background: rgba(240, 248, 255, 0.7);
-            padding: 20px;
+            background: rgba(240, 248, 255, 0.8);
+            padding: 18px;
             border-radius: 20px;
-            margin: 20px 0;
+            margin: 15px 0;
             border: 1px solid #d1d8e0;
         }
 
-        .info-box p { margin: 10px 0; color: #2f3542; font-size: 16px; }
+        .info-box p { margin: 8px 0; color: #2f3542; font-size: 16px; line-height: 1.4; }
 
         .btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 16px;
-            border-radius: 15px;
+            padding: 14px;
+            border-radius: 12px;
             text-decoration: none;
             color: white;
             font-weight: bold;
-            margin-bottom: 12px;
-            font-size: 17px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            font-size: 16px;
         }
 
         .btn-wsp { background-color: #25d366; }
         .btn-gps { background-color: #4b7bec; }
 
+        .footer-brand {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #a0a0a0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -104,33 +107,31 @@
 
 <div class="card">
     <div class="content">
+        <img src="https://ricaldeart.github.io/Pet3D/logo.png" alt="Pet3D Logo" class="logo-top">
+        
+        <br>
         <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=300" alt="Mascota" class="pet-photo">
         
-        <div><span class="status-badge">🚨 PERDIDO / LOST</span></div>
-
-        <h2 style="margin: 0; color: #2d3436; font-size: 28px;">Pipo</h2>
+        <div class="pet-name">Pipo</div>
         
         <div class="info-box">
-            <p><strong>📍 Distrito:</strong> <span id="dist">Surco, Lima</span></p>
-            <p><strong>🏥 Salud:</strong> <span id="salud">Diabético - requiere insulina</span></p>
+            <p><strong>📍 Distrito:</strong> Surco, Lima</p>
+            <p><strong>🏥 Salud:</strong> Diabético - requiere insulina</p>
         </div>
 
         <a href="https://wa.me/51999888777" class="btn btn-wsp">
             WhatsApp del Dueño
         </a>
 
-        <a href="#" onclick="alert('Ubicación enviada al dueño')" class="btn btn-gps">
+        <a href="#" class="btn btn-gps">
             Enviar mi Ubicación
         </a>
+
+        <div class="footer-brand">
+            🛡️ Protegido por Pet3D
+        </div>
     </div>
 </div>
-
-<script>
-    // Lógica para detectar el ID y que luego usaremos para la base de datos
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    console.log("Cargando mascota ID:", id);
-</script>
 
 </body>
 </html>
