@@ -1,69 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet3D Safe - Identification</title>
-    <style>
-        body {
-            background-color: #eef2f7;
-            background-image: url("https://www.transparenttextures.com/patterns/paws.png");
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            width: 85%; max-width: 380px; padding: 25px; text-align: center; position: relative;
-        }
-        .wifi-bg {
-            position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
-            width: 250px; height: 250px; opacity: 0.05; z-index: 0;
-        }
-        .content { position: relative; z-index: 1; }
-        .logo-pet3d { width: 180px; height: auto; margin-bottom: 15px; }
-        .pet-photo {
-            width: 150px; height: 150px; border-radius: 50%; border: 5px solid #ffcc00;
-            object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .pet-name { margin: 15px 0 5px 0; color: #2d3436; font-size: 30px; font-weight: bold; }
-        .info-box {
-            text-align: left; background: rgba(240, 248, 255, 0.8);
-            padding: 18px; border-radius: 20px; margin: 15px 0; border: 1px solid #d1d8e0;
-        }
-        .info-box p { margin: 8px 0; color: #2f3542; font-size: 15px; }
-        .btn {
-            display: flex; align-items: center; justify-content: center;
-            padding: 14px; border-radius: 12px; text-decoration: none; color: white; font-weight: bold; margin-bottom: 10px;
-        }
-        .btn-wsp { background-color: #25d366; }
-        .btn-gps { background-color: #4b7bec; }
-        .footer-brand { margin-top: 20px; font-size: 12px; color: #a0a0a0; font-weight: bold; }
-    </style>
-</head>
-<body>
-    <svg class="wifi-bg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12,21L15.6,17.4C14.6,16.4 13.4,16 12,16C10.6,16 9.4,16.4 8.4,17.4L12,21M12,13C14.7,13 17.1,14.1 19,15.9L20.4,14.5C18.1,12.3 15.2,11 12,11C8.8,11 5.9,12.3 3.6,14.5L5,15.9C6.9,14.1 9.3,13 12,13M12,9C16.1,9 19.8,10.6 22.6,13.3L24,11.9C20.8,8.8 16.6,7 12,7C7.4,7 3.2,8.8 0,11.9L1.4,13.3C4.2,10.6 7.9,9 12,9Z"/>
-    </svg>
+import time
 
-    <div class="card">
-        <div class="content">
-            <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" alt="Pet3D Logo" class="logo-pet3d">
-            <br>
-            <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/Eva/Eva.jpg" class="pet-photo">
-            
-            <div class="pet-name">Eva</div>
-            
-            <div class="info-box">
-                <p><strong>📍 Home:</strong> Berlin</p>
-                <p><strong>⚠️ Note:</strong> I am very fearful :(</p>
-            </div>
+class EvaPet3D:
+    def __init__(self):
+        self.version = "2.2 - Minnie Style"
+        self.contacto = "+51 940 036 564"
+        self.nombre = "EVA"
+        self.empresa = "Pet3D"
+        
+    def saludo_estilizado(self):
+        print(f"✨ [{self.nombre}]: ¡Hola! Soy tu asistente de {self.empresa}. ✨")
+        print(f"🐾 Estoy lista para ayudarte con tus diseños 3D.")
+        print(f"📞 Contacto actualizado: {self.contacto}")
+        print("-" * 40)
 
-            <a href="https://wa.me/51940036564?text=Hi, I found Eva" class="btn btn-wsp">Notify via WhatsApp</a>
-            <a href="#" onclick="alert('Location sent')" class="btn btn-gps">Share My Location</a>
+    def procesar_pedido(self, item):
+        print(f"🎨 {self.nombre} está modelando tu {item} al estilo Pet3D...")
+        time.sleep(1) # Simulación de procesamiento
+        print(f"✅ ¡Listo! Si tienes dudas, escríbenos al {self.contacto}")
 
-            <div class="footer-brand">🛡️ PROTECTED BY PET3D</div>
-        </div>
-    </div>
-</body>
-</html>
+# --- EJECUCIÓN DEL SISTEMA ---
+eva = EvaPet3D()
+eva.saludo_estilizado()
+
+# Ejemplo de acción
+# eva.procesar_pedido("Prótesis Canina Personalizada")
