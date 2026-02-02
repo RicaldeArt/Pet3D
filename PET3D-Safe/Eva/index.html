@@ -1,141 +1,72 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVA - Asistente Pet3D</title>
+    <title>EVA Pet3D</title>
     <style>
-        :root {
-            --accent-pink: #ff4d94; /* Tono Minnie mejorado */
-            --pet-blue: #2daae1;   /* Identidad Pet3D */
-            --soft-bg: #fdfdfd;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fce4ec;
+            background-color: #fce4ec; /* Fondo rosa suave para que no se vea blanco */
+            font-family: sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
         }
-
-        .eva-container {
-            background: var(--soft-bg);
-            width: 380px;
-            border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            overflow: hidden;
+        .tarjeta {
+            background: white;
+            width: 320px;
+            padding: 20px;
+            border-radius: 25px;
             text-align: center;
-            border: 4px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border: 4px solid #ff4d94; /* Borde rosa fuerte */
         }
-
-        .header-gradient {
-            background: linear-gradient(135deg, var(--accent-pink), var(--pet-blue));
-            height: 100px;
-            position: relative;
-        }
-
-        /* VINCULACIÓN DE LA FOTO Eva.jpg */
-        .eva-profile-img {
-            width: 140px;
-            height: 140px;
-            background: #fff;
+        .contenedor-foto {
+            width: 120px;
+            height: 120px;
+            background-color: #ffc1e3; /* Fondo de respaldo si no carga la foto */
             border-radius: 50%;
-            border: 6px solid white;
-            position: relative;
-            margin-top: -70px; /* Sube la foto al centro del gradiente */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #ff4d94;
+        }
+        .contenedor-foto img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
-
-        .content {
-            padding: 20px 30px 30px;
-        }
-
-        h2 {
-            margin: 10px 0 5px;
-            color: #333;
-            font-size: 1.8em;
-            letter-spacing: 1px;
-        }
-
-        .badge {
-            background: var(--pet-blue);
+        h1 { color: #333; margin: 10px 0; font-size: 24px; }
+        p { color: #666; font-size: 14px; line-height: 1.4; }
+        .numero {
+            display: block;
+            background: #2daae1;
             color: white;
-            padding: 4px 15px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .description {
-            color: #666;
-            font-size: 0.95em;
-            line-height: 1.5;
-            margin-bottom: 25px;
-        }
-
-        .contact-card {
-            background: #f9f9f9;
-            border-radius: 20px;
-            padding: 15px;
-            border: 2px solid #eeeeee;
-        }
-
-        .contact-label {
-            display: block;
-            font-size: 0.75em;
-            color: var(--accent-pink);
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .phone-link {
-            font-size: 1.4em;
-            color: #2c3e50;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 10px;
             text-decoration: none;
-            font-weight: 800;
-            display: block;
-        }
-
-        .phone-link:hover {
-            color: var(--pet-blue);
-        }
-
-        .footer-tag {
-            margin-top: 20px;
-            font-size: 0.7em;
-            color: #bbb;
+            font-weight: bold;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
-<div class="eva-container">
-    <div class="header-gradient"></div>
-    
-    <img src="Eva.jpg" alt="Eva Asistente" class="eva-profile-img">
-
-    <div class="content">
-        <span class="badge">SISTEMA ACTUALIZADO</span>
-        <h2>EVA</h2>
-        <p class="description">
-            Tu experta en soluciones de impresión 3D para mascotas. <br>
-            Combinando tecnología y amor animal.
-        </p>
-        
-        <div class="contact-card">
-            <span class="contact-label">Línea de Atención Pet3D</span>
-            <a href="tel:+51940036564" class="phone-link">51 940 036 564</a>
+    <div class="tarjeta">
+        <div class="contenedor-foto">
+            <img src="Eva.jpg" alt="EVA">
         </div>
-
-        <p class="footer-tag">Pet3D v2.3 - Interface Minnie Style</p>
+        
+        <h1>EVA</h1>
+        <p>Asistente Virtual de <strong>Pet3D</strong><br>Estilo Minnie v2.2</p>
+        
+        <p>¿Necesitas ayuda con tu diseño?</p>
+        
+        <a href="tel:+51940036564" class="numero">
+            📞 51 940 036 564
+        </a>
     </div>
-</div>
 
 </body>
 </html>
