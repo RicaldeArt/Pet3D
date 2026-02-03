@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet3D Safe - Identificación</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        /* Mantenemos tu estilo ganador de Minnie/Eva */
+        body { background-color: #eef2f7; background-image: url("https://www.transparenttextures.com/patterns/paws.png"); font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: rgba(255, 255, 255, 0.98); border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); width: 85%; max-width: 380px; padding: 25px; text-align: center; }
+        .logo-pet3d { width: 180px; height: auto; margin-bottom: 15px; }
+        .pet-photo { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #ffcc00; object-fit: cover; }
+        .pet-name { margin: 15px 0 5px 0; color: #2d3436; font-size: 30px; font-weight: bold; }
+        .info-box { text-align: left; background: rgba(240, 248, 255, 0.8); padding: 18px; border-radius: 20px; margin: 15px 0; border: 1px solid #d1d8e0; }
+        .btn { display: flex; align-items: center; justify-content: center; padding: 14px; border-radius: 12px; text-decoration: none; color: white; font-weight: bold; margin-bottom: 10px; cursor: pointer; border: none; width: 100%; font-family: inherit; }
+        .btn-wsp { background-color: #25d366; }
+        .btn-gps { background-color: #4b7bec; }
+    </style>
+</head>
+<body>
+    <div class="card" id="main-card" style="display:none;">
+        <div class="content">
+            <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" alt="Pet3D Logo" class="logo-pet3d">
+            <br>
+            <img id="display-photo" src="" class="pet-photo">
+            <div id="display-name" class="pet-name">Cargando...</div>
+            <div class="info-box">
+                <p><strong>📍 Hogar:</strong> <span id="display-home"></span></p>
+                <p><strong>📝 Nota:</strong> <span id="display-note"></span></p>
+            </div>
+            <a id="btn-whatsapp" href="#" class="btn btn-wsp">Avisar por WhatsApp</a>
+            <button onclick="enviarUbicacion()" class="btn btn-gps">Compartir mi Ubicación</button>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN DE TU FIREBASE (Aquí pondrás tus llaves)
+        const firebaseConfig = {
+            databaseURL: "TU_URL_DE_FIREBASE_AQUÍ"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Obtener el ID de la medalla de la URL (ej: ver.html?id=1001)
+        const urlParams = new URLSearchParams(window.location.search);
+        const petId = urlParams.get('id');
+
+        if (petId) {
+            db.ref('mascotas/' + petId).on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    // Si existe el perro, llenamos la ficha
+                    document.getElementById('display-name').innerText = data.nombre;
+                    document.getElementById('display-photo').src = data.fotoUrl;
+                    document.getElementById('display-home').innerText = data.hogar;
+                    document.getElementById('display-note').innerText = data.nota;
+                    document.getElementById('btn-whatsapp').href = `https://wa.me/${data.telefono}?text=Hola, encontré a ${data.nombre}`;
+                    document.getElementById('main-card').style.display = 'block';
+                } else {
+                    // Si el chip es nuevo, mandamos al registro
+                    window.location.href = "registro.html?id=" + petId;
+                }
+            });
+        }
+
+        function enviarUbicacion() {
+            // Lógica de GPS que ya tenemos funcionando
+        }
+    </script>
+</body>
+</html>
