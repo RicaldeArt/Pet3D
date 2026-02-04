@@ -10,21 +10,21 @@
         body { background-color: #eef2f7; background-image: url("https://www.transparenttextures.com/patterns/paws.png"); font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
         .card { background: rgba(255, 255, 255, 0.98); border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); width: 85%; max-width: 380px; padding: 25px; text-align: center; display: none; }
         .logo-pet3d { width: 180px; height: auto; margin-bottom: 15px; }
-        .pet-photo { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #ffcc00; object-fit: cover; background: #eee; }
+        .pet-photo { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #ffcc00; object-fit: cover; }
         .pet-name { margin: 15px 0 5px 0; color: #2d3436; font-size: 30px; font-weight: bold; }
         .info-box { text-align: left; background: rgba(240, 248, 255, 0.8); padding: 18px; border-radius: 20px; margin: 15px 0; border: 1px solid #d1d8e0; }
         .btn { display: flex; align-items: center; justify-content: center; padding: 14px; border-radius: 12px; text-decoration: none; color: white; font-weight: bold; margin-bottom: 10px; cursor: pointer; border: none; width: 100%; font-family: inherit; font-size: 16px; }
         .btn-wsp { background-color: #25d366; }
         .btn-gps { background-color: #4b7bec; }
-        .edit-link { display: block; margin-top: 15px; font-size: 12px; color: #4b7bec; text-decoration: none; }
+        .edit-link { display: block; margin-top: 15px; font-size: 12px; color: #4b7bec; text-decoration: none; cursor: pointer; border-top: 1px solid #eee; padding-top: 10px; }
     </style>
 </head>
 <body>
-    <div id="loading" style="color: #666;">Cargando datos de la medalla...</div>
+    <div id="loading">Cargando datos...</div>
 
     <div class="card" id="main-card">
         <div class="content">
-            <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" alt="Pet3D Logo" class="logo-pet3d">
+            <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" class="logo-pet3d">
             <br>
             <img id="display-photo" src="" class="pet-photo">
             <div id="display-name" class="pet-name"></div>
@@ -34,15 +34,12 @@
             </div>
             <a id="btn-whatsapp" href="#" class="btn btn-wsp">AVISAR POR WHATSAPP</a>
             <button onclick="enviarUbicacion()" class="btn btn-gps">COMPARTIR MI UBICACIÓN</button>
-            <a id="btn-edit" href="#" class="edit-link">⚙️ Actualizar información</a>
+            <div id="btn-edit" class="edit-link">⚙️ Actualizar mi información</div>
         </div>
     </div>
 
     <script>
-        // URL DE TU FIREBASE REAL
-        const firebaseConfig = {
-            databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com/"
-        };
+        const firebaseConfig = { databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
@@ -53,26 +50,24 @@
             db.ref('mascotas/' + petId).on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    // Ocultamos el mensaje de carga y mostramos la tarjeta
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('main-card').style.display = 'block';
-
-                    // Llenamos los datos
                     document.getElementById('display-name').innerText = data.nombre;
-                    document.getElementById('display-photo').src = data.fotoUrl || "https://via.placeholder.com/150";
-                    document.getElementById('display-home').innerText = data.hogar || "No especificado";
-                    document.getElementById('display-note').innerText = data.estado || data.nota || "Sin notas";
-                    
-                    // El campo en tu Firebase es 'whatsapp'
+                    document.getElementById('display-photo').src = data.fotoUrl;
+                    document.getElementById('display-home').innerText = data.hogar;
+                    document.getElementById('display-note').innerText = data.estado;
                     document.getElementById('btn-whatsapp').href = `https://wa.me/${data.whatsapp}?text=Hola, encontré a ${data.nombre}`;
-                    document.getElementById('btn-edit').href = "registro.html?id=" + petId;
+                    
+                    // Lógica de seguridad para editar
+                    document.getElementById('btn-edit').onclick = function() {
+                        const pass = prompt("Ingresa tu clave de dueño para editar:");
+                        if (pass === data.password) { window.location.href = "registro.html?id=" + petId; }
+                        else { alert("Clave incorrecta."); }
+                    };
                 } else {
-                    // Si no existe, al registro
                     window.location.href = "registro.html?id=" + petId;
                 }
             });
-        } else {
-            document.getElementById('loading').innerText = "Error: ID de medalla no encontrado.";
         }
 
         function enviarUbicacion() {
@@ -81,12 +76,9 @@
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
                     const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`;
-                    const name = document.getElementById('display-name').innerText;
                     const wspLink = document.getElementById('btn-whatsapp').href;
-                    window.location.href = `${wspLink}. Mi ubicación actual es: ${mapUrl}`;
-                }, function() {
-                    alert("Por favor, activa el GPS para compartir la ubicación.");
-                });
+                    window.location.href = `${wspLink}. Mi ubicación es: ${mapUrl}`;
+                }, () => alert("Activa el GPS"));
             }
         }
     </script>
