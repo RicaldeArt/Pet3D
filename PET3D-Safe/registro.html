@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet3D Safe - Registro</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        body { background-color: #eef2f7; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: white; border-radius: 25px; padding: 25px; width: 85%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        .logo { width: 150px; margin-bottom: 15px; }
+        h2 { color: #2d3436; margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-family: inherit; }
+        .btn-save { background: #25d366; color: white; border: none; width: 100%; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" class="logo">
+        <h2>Activar Medalla 🐾</h2>
+        <form id="petForm">
+            <input type="text" id="nombre" placeholder="Nombre de tu mascota" required>
+            <input type="tel" id="whatsapp" placeholder="Tu WhatsApp (ej: 51992849437)" required>
+            <textarea id="estado" placeholder="Notas importantes (ej: Alergias, carácter o dirección)"></textarea>
+            <input type="text" id="fotoUrl" placeholder="Link de foto (puedes dejarlo vacío por ahora)">
+            <input type="text" id="hogar" placeholder="Distrito o Ciudad">
+            <button type="submit" class="btn-save">GUARDAR Y ACTIVAR</button>
+        </form>
+    </div>
+
+    <script>
+        // Configuración conectada a tu Firebase real
+        const firebaseConfig = {
+            databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Capturamos el ID que viene en el link (ej: ?id=100)
+        const urlParams = new URLSearchParams(window.location.search);
+        const petId = urlParams.get('id');
+
+        document.getElementById('petForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            if (!petId) {
+                alert("Error: No se encontró el ID de la medalla. Escanea el chip nuevamente.");
+                return;
+            }
+
+            const data = {
+                nombre: document.getElementById('nombre').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                estado: document.getElementById('estado').value,
+                fotoUrl: document.getElementById('fotoUrl').value || "https://via.placeholder.com/150",
+                hogar: document.getElementById('hogar').value
+            };
+
+            // Guardamos en la carpeta 'mascotas' bajo el ID correspondiente
+            db.ref('mascotas/' + petId).set(data, (error) => {
+                if (error) {
+                    alert("Hubo un error al guardar. Intenta de nuevo.");
+                } else {
+                    alert("¡Excelente! La medalla de " + data.nombre + " ha sido activada.");
+                    // Al terminar, lo mandamos a ver su perfil recién creado
+                    window.location.href = "ver.html?id=" + petId;
+                }
+            });
+        };
+    </script>
+</body>
+</html>
