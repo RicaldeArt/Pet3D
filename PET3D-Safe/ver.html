@@ -40,4 +40,148 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.1); 
             width: 100%; max-width: 380px; padding: 30px; 
             text-align: center; display: none;
-            border
+            border: 1px solid rgba(255,255,255,0.8);
+            position: relative; overflow: hidden;
+        }
+
+        .logo-header { width: 140px; margin-bottom: 20px; }
+
+        .photo-frame {
+            width: 170px; height: 170px; border-radius: 50%; 
+            border: 6px solid #ffcc00; object-fit: cover;
+            margin: 0 auto 15px; display: block;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .pet-name { 
+            font-size: 34px; font-weight: 800; color: var(--text-dark);
+            margin: 10px 0; letter-spacing: -1px;
+        }
+
+        .info-container { 
+            text-align: left; background: #f0f7f4; padding: 22px; 
+            border-radius: 25px; margin: 20px 0; border: 1px solid #dbeef5;
+        }
+
+        .info-row { display: flex; align-items: flex-start; margin-bottom: 12px; }
+        .info-row i { color: #ffcc00; margin-right: 12px; margin-top: 4px; font-size: 18px; }
+        .info-row p { margin: 0; color: #444; font-size: 15px; line-height: 1.4; }
+
+        .btn { 
+            display: flex; align-items: center; justify-content: center; 
+            padding: 18px; border-radius: 20px; text-decoration: none; 
+            color: white; font-weight: 800; cursor: pointer; border: none; 
+            width: 100%; font-family: inherit; font-size: 16px; margin-bottom: 12px;
+            transition: all 0.3s ease; box-sizing: border-box;
+        }
+
+        .btn:active { transform: scale(0.96); }
+        .btn-wsp { background: var(--primary); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25); }
+        .btn-gps { background: var(--secondary); box-shadow: 0 8px 20px rgba(75, 123, 236, 0.25); }
+        .btn i { margin-right: 12px; font-size: 20px; }
+
+        .footer-link { 
+            margin-top: 25px; font-size: 13px; color: #999; 
+            cursor: pointer; display: inline-block; padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading">
+        <i class="fas fa-paw fa-spin" style="font-size: 40px; color: #ccc;"></i>
+        <p>Conectando con Pet3D Safe...</p>
+    </div>
+
+    <div class="card" id="main-card">
+        <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" class="logo-header">
+        
+        <img id="display-photo" src="" class="photo-frame">
+        <div id="display-name" class="pet-name"></div>
+        
+        <div class="info-container">
+            <div class="info-row">
+                <i class="fas fa-house-chimney"></i>
+                <p><strong>Hogar:</strong> <span id="display-home"></span></p>
+            </div>
+            <div class="info-row">
+                <i class="fas fa-comment-medical"></i>
+                <p><strong>Nota importante:</strong> <br><span id="display-note"></span></p>
+            </div>
+        </div>
+
+        <a id="btn-whatsapp" href="#" class="btn btn-wsp">
+            <i class="fab fa-whatsapp"></i> AVISAR POR WHATSAPP
+        </a>
+        
+        <button onclick="enviarUbicacion()" class="btn btn-gps">
+            <i class="fas fa-location-dot"></i> ENVIAR MI UBICACIÓN
+        </button>
+
+        <div id="btn-edit" class="footer-link">
+            <i class="fas fa-user-gear"></i> Gestionar perfil del dueño
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = { databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com/" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const petId = urlParams.get('id');
+
+        if (petId) {
+            db.ref('mascotas/' + petId).on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('main-card').style.display = 'block';
+                    
+                    document.getElementById('display-name').innerText = data.nombre;
+                    document.getElementById('display-photo').src = data.fotoUrl;
+                    document.getElementById('display-home').innerText = data.hogar || "No especificado";
+                    document.getElementById('display-note').innerText = data.estado || "Sin notas adicionales";
+                    
+                    // MENSAJE PERSONALIZADO DE MARCA
+                    const mensajeBase = `¡Hola! He escaneado la medalla Pet3D Safe de *${data.nombre}* y lo tengo conmigo.`;
+                    document.getElementById('btn-whatsapp').href = `https://wa.me/${data.whatsapp}?text=${encodeURIComponent(mensajeBase)}`;
+                    
+                    document.getElementById('btn-edit').onclick = function() {
+                        const pass = prompt("🔐 Ingresa tu clave para editar los datos:");
+                        if (pass === data.password) { window.location.href = "registro.html?id=" + petId; }
+                        else if(pass != null) { alert("Clave incorrecta."); }
+                    };
+                } else {
+                    window.location.href = "registro.html?id=" + petId;
+                }
+            });
+        }
+
+        function enviarUbicacion() {
+            if (navigator.geolocation) {
+                const btn = document.querySelector('.btn-gps');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Obteniendo ubicación...';
+                
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                    
+                    const petName = document.getElementById('display-name').innerText;
+                    const finalMsg = `¡Hola! He escaneado la medalla Pet3D Safe de *${petName}*. Mi ubicación actual es: ${googleMapsUrl}`;
+                    
+                    const whatsappUrl = document.getElementById('btn-whatsapp').href.split('?text=')[0];
+                    window.location.href = `${whatsappUrl}?text=${encodeURIComponent(finalMsg)}`;
+                }, () => {
+                    alert("Por favor activa el GPS para poder enviar la ubicación exacta.");
+                    btn.innerHTML = originalText;
+                });
+            } else {
+                alert("Tu navegador no soporta geolocalización.");
+            }
+        }
+    </script>
+</body>
+</html>
