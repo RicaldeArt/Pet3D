@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargando Pet3D Safe...</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        body { background: #eef2f7; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
+        .loader { text-align: center; }
+        .logo { width: 120px; margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" class="logo">
+        <p style="color: #666;">Verificando medalla...</p>
+    </div>
+
+    <script>
+        const firebaseConfig = { databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com/" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const petId = urlParams.get('id');
+
+        if (!petId) {
+            document.body.innerHTML = "<h2>Error: ID no válido</h2>";
+        } else {
+            db.ref('mascotas/' + petId).once('value').then((snapshot) => {
+                if (snapshot.exists()) {
+                    window.location.href = "ver.html?id=" + petId;
+                } else {
+                    window.location.href = "registro.html?id=" + petId;
+                }
+            }).catch(() => {
+                window.location.href = "registro.html?id=" + petId;
+            });
+        }
+    </script>
+</body>
+</html>
