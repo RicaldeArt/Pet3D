@@ -11,25 +11,26 @@
         :root {
             --primary: #25d366;
             --secondary: #4b7bec;
-            --bg-mint: #e8f5f1; /* Verde menta suave */
+            --bg-mint: #e8f5f1; 
             --text-dark: #2d3436;
         }
         
         body { 
             background-color: var(--bg-mint); 
-            /* El patrón de huellas y señal wifi con baja opacidad */
-            background-image: url("https://www.transparenttextures.com/patterns/paws.png"); 
+            /* USAMOS TU IMAGEN DE HUELLAS + WIFI COMO PATRÓN */
+            background-image: url("https://ricaldeart.github.io/Pet3D/PET3D-Safe/image_91f565.png"); 
+            background-size: 180px; /* Tamaño controlado para que se vea repetido y elegante */
+            background-repeat: repeat;
             font-family: 'Segoe UI', Roboto, sans-serif; 
             display: flex; justify-content: center; align-items: center; 
             min-height: 100vh; margin: 0; padding: 15px;
         }
 
-        /* Capa adicional para el efecto de señal WiFi de fondo */
+        /* Capa para suavizar el fondo y que no distraiga */
         body::before {
             content: "";
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png') no-repeat center;
-            opacity: 0.03; /* Muy sutil para que no moleste */
+            background-color: rgba(232, 245, 241, 0.85); /* Tinte menta para dar opacidad al patrón */
             z-index: -1;
         }
 
@@ -42,6 +43,7 @@
             text-align: center; display: none;
             border: 1px solid rgba(255,255,255,0.8);
             position: relative; overflow: hidden;
+            z-index: 1;
         }
 
         .logo-header { width: 140px; margin-bottom: 20px; }
@@ -143,7 +145,6 @@
                     document.getElementById('display-home').innerText = data.hogar || "No especificado";
                     document.getElementById('display-note').innerText = data.estado || "Sin notas adicionales";
                     
-                    // MENSAJE PERSONALIZADO DE MARCA
                     const mensajeBase = `¡Hola! He escaneado la medalla Pet3D Safe de *${data.nombre}* y lo tengo conmigo.`;
                     document.getElementById('btn-whatsapp').href = `https://wa.me/${data.whatsapp}?text=${encodeURIComponent(mensajeBase)}`;
                     
@@ -178,8 +179,6 @@
                     alert("Por favor activa el GPS para poder enviar la ubicación exacta.");
                     btn.innerHTML = originalText;
                 });
-            } else {
-                alert("Tu navegador no soporta geolocalización.");
             }
         }
     </script>
