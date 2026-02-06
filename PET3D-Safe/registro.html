@@ -9,84 +9,69 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-    :root {
-        --primary: #25d366;
-        --secondary: #4b7bec;
-        --bg-mint: #e8f5f1; 
-        --text-dark: #2d3436;
-    }
-    
-    body { 
-        background-color: var(--bg-mint); 
-        /* Usamos tu nuevo fondo tileable */
-        background-image: url("https://ricaldeart.github.io/Pet3D/PET3D-Safe/fondo-tile.png"); 
-        background-size: 150px; 
-        background-repeat: repeat;
-        font-family: 'Segoe UI', Roboto, sans-serif; 
-        display: flex; justify-content: center; align-items: center; 
-        min-height: 100vh; margin: 0; padding: 20px;
-        position: relative;
-    }
+        :root {
+            --primary: #25d366;
+            --secondary: #4b7bec;
+            --bg-mint: #e8f5f1; 
+            --text-dark: #2d3436;
+        }
+        
+        body { 
+            background-color: var(--bg-mint); 
+            background-image: url("https://ricaldeart.github.io/Pet3D/PET3D-Safe/fondo-tile.png"); 
+            background-size: 150px; 
+            background-repeat: repeat;
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; padding: 20px;
+            position: relative;
+        }
 
-    /* Capa para suavizar el fondo y que el formulario resalte */
-    body::before {
-        content: "";
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-color: rgba(232, 245, 241, 0.85); 
-        z-index: -1;
-    }
+        body::before {
+            content: "";
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(232, 245, 241, 0.85); 
+            z-index: -1;
+        }
 
-    .card { 
-        background: white; border-radius: 35px; 
-        padding: 35px; width: 100%; max-width: 400px; 
-        box-shadow: 0 20px 40px rgba(0,0,0,0.12); 
-        text-align: center; border: 1px solid rgba(255,255,255,0.3);
-        z-index: 1; /* Para que esté sobre la capa before */
-    }
-    
-    /* ... el resto de tus estilos de inputs y botones se mantienen igual ... */
-</style>
-        .logo { width: 160px; margin-bottom: 10px; }
-        h2 { color: var(--text); font-size: 24px; font-weight: 800; margin-bottom: 25px; }
+        .card { 
+            background: white; border-radius: 35px; 
+            padding: 30px; width: 100%; max-width: 400px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12); 
+            text-align: center; border: 1px solid rgba(255,255,255,0.3);
+            z-index: 1;
+        }
+
+        .logo { width: 150px; margin-bottom: 10px; }
+        h2 { color: var(--text-dark); font-size: 22px; font-weight: 800; margin-bottom: 20px; }
         
         .form-group { text-align: left; margin-bottom: 15px; }
         label { font-size: 13px; font-weight: bold; color: #718096; margin-left: 10px; margin-bottom: 5px; display: block; }
         
         input, textarea { 
-            width: 100%; padding: 14px 18px; border: 2px solid #edf2f7; 
-            border-radius: 18px; box-sizing: border-box; 
-            font-family: inherit; font-size: 15px; transition: border-color 0.3s;
+            width: 100%; padding: 12px 15px; border: 2px solid #edf2f7; 
+            border-radius: 15px; box-sizing: border-box; 
+            font-family: inherit; font-size: 14px; transition: 0.3s;
             background: #f8f9fa;
         }
         input:focus, textarea:focus { outline: none; border-color: var(--secondary); background: white; }
         
-        /* Estilo para el input de archivo */
-        .file-input-wrapper {
-            position: relative; overflow: hidden; display: inline-block; width: 100%;
-            margin-top: 5px;
-        }
+        .file-input-wrapper { position: relative; width: 100%; margin-top: 5px; }
         .btn-file {
             background: #f1f5f9; border: 2px dashed #cbd5e0; color: #4a5568;
-            padding: 12px; border-radius: 18px; width: 100%; display: block;
-            cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.3s;
+            padding: 10px; border-radius: 15px; width: 100%; cursor: pointer; font-size: 14px;
         }
-        .btn-file:hover { background: #e2e8f0; border-color: var(--secondary); }
-        input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; }
+        input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
 
         .btn-save { 
             background: var(--primary); color: white; border: none; 
-            width: 100%; padding: 18px; border-radius: 20px; 
-            font-weight: 800; cursor: pointer; margin-top: 25px; 
+            width: 100%; padding: 16px; border-radius: 20px; 
+            font-weight: 800; cursor: pointer; margin-top: 20px; 
             font-size: 16px; transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
         }
-        .btn-save:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(37, 211, 102, 0.3); }
-        .btn-save:disabled { background: #cbd5e0; transform: none; box-shadow: none; }
+        .btn-save:disabled { background: #cbd5e0; }
 
-        .pass-info { 
-            font-size: 11px; color: #a0aec0; margin-top: 15px; 
-            text-align: center; font-style: italic;
-        }
+        .pass-info { font-size: 11px; color: #a0aec0; margin-top: 10px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -99,17 +84,14 @@
                 <label><i class="fas fa-dog"></i> Nombre de tu mascota</label>
                 <input type="text" id="nombre" placeholder="Ej: Bobby" required>
             </div>
-
             <div class="form-group">
-                <label><i class="fab fa-whatsapp"></i> Tu WhatsApp (con código de país)</label>
+                <label><i class="fab fa-whatsapp"></i> Tu WhatsApp</label>
                 <input type="tel" id="whatsapp" placeholder="Ej: 51900000000" required>
             </div>
-
             <div class="form-group">
                 <label><i class="fas fa-sticky-note"></i> Notas importantes</label>
-                <textarea id="estado" rows="2" placeholder="Ej: Es muy amigable, pero alérgico al pollo."></textarea>
+                <textarea id="estado" rows="2" placeholder="Ej: Alérgico al pollo."></textarea>
             </div>
-            
             <div class="form-group">
                 <label><i class="fas fa-camera"></i> Foto de tu mascota</label>
                 <div class="file-input-wrapper">
@@ -117,19 +99,16 @@
                     <input type="file" id="fotoFile" accept="image/*">
                 </div>
             </div>
-            
             <div class="form-group">
-                <label><i class="fas fa-map-marker-alt"></i> Ubicación (Distrito/Ciudad)</label>
+                <label><i class="fas fa-map-marker-alt"></i> Ubicación</label>
                 <input type="text" id="hogar" placeholder="Ej: Miraflores, Lima">
             </div>
-            
             <div class="form-group">
-                <label><i class="fas fa-lock"></i> Clave de seguridad (para editar)</label>
-                <input type="password" id="password" placeholder="Crea una clave de 4 dígitos" required>
+                <label><i class="fas fa-lock"></i> Clave para editar</label>
+                <input type="password" id="password" placeholder="Crea tu clave" required>
             </div>
-
             <button type="submit" id="btnEnviar" class="btn-save">GUARDAR Y ACTIVAR</button>
-            <p class="pass-info">Esta clave te permitirá actualizar los datos en el futuro.</p>
+            <p class="pass-info">Esta clave te servirá para actualizar datos luego.</p>
         </form>
     </div>
 
@@ -138,54 +117,41 @@
             databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com/",
             storageBucket: "pet3d-safe.firebasestorage.app" 
         };
-        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const storage = firebase.storage();
-
         const urlParams = new URLSearchParams(window.location.search);
         const petId = urlParams.get('id');
 
-        // Mostrar nombre del archivo seleccionado
         document.getElementById('fotoFile').onchange = function() {
-            if(this.files[0]) document.getElementById('fileBtn').innerText = "✅ Foto seleccionada";
+            if(this.files[0]) document.getElementById('fileBtn').innerText = "✅ Foto lista";
         };
 
         document.getElementById('petForm').onsubmit = async function(e) {
             e.preventDefault();
-            if (!petId) { alert("Error: Escanea la medalla nuevamente."); return; }
-
+            if (!petId) { alert("Error: ID no encontrado."); return; }
             const btn = document.getElementById('btnEnviar');
             const file = document.getElementById('fotoFile').files[0];
-            
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo datos...';
+            btn.innerHTML = '<i class="fas fa-paw fa-spin"></i> Activando...';
             btn.disabled = true;
-
             let finalUrl = "https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png";
-
             try {
                 if (file) {
                     const storageRef = storage.ref('fotos/' + petId);
                     await storageRef.put(file);
                     finalUrl = await storageRef.getDownloadURL();
                 }
-
-                const data = {
+                await db.ref('mascotas/' + petId).set({
                     nombre: document.getElementById('nombre').value,
                     whatsapp: document.getElementById('whatsapp').value,
                     estado: document.getElementById('estado').value,
                     fotoUrl: finalUrl,
                     hogar: document.getElementById('hogar').value,
                     password: document.getElementById('password').value
-                };
-
-                await db.ref('mascotas/' + petId).set(data);
-                
+                });
                 window.location.href = "ver.html?id=" + petId; 
-
             } catch (error) {
-                console.error(error);
-                alert("Hubo un error: " + error.message);
+                alert("Error: " + error.message);
                 btn.innerText = "GUARDAR Y ACTIVAR";
                 btn.disabled = false;
             }
