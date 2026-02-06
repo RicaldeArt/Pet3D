@@ -48,6 +48,14 @@
         .form-group { text-align: left; margin-bottom: 15px; }
         label { font-size: 13px; font-weight: bold; color: #718096; margin-left: 10px; margin-bottom: 5px; display: block; }
         
+        /* Estilos para el campo de teléfono con prefijo */
+        .phone-input-container { display: flex; gap: 8px; }
+        .prefix-box { 
+            width: 65px; background: #edf2f7; border: 2px solid #edf2f7; 
+            border-radius: 15px; padding: 12px 0; text-align: center;
+            font-size: 14px; font-weight: bold; color: #4a5568;
+        }
+
         input, textarea { 
             width: 100%; padding: 12px 15px; border: 2px solid #edf2f7; 
             border-radius: 15px; box-sizing: border-box; 
@@ -84,14 +92,20 @@
                 <label><i class="fas fa-dog"></i> Nombre de tu mascota</label>
                 <input type="text" id="nombre" placeholder="Ej: Bobby" required>
             </div>
+
             <div class="form-group">
                 <label><i class="fab fa-whatsapp"></i> Tu WhatsApp</label>
-                <input type="tel" id="whatsapp" placeholder="Ej: 51900000000" required>
+                <div class="phone-input-container">
+                    <div class="prefix-box">+51</div>
+                    <input type="tel" id="whatsapp" placeholder="999888777" maxlength="9" required>
+                </div>
             </div>
+
             <div class="form-group">
                 <label><i class="fas fa-sticky-note"></i> Notas importantes</label>
                 <textarea id="estado" rows="2" placeholder="Ej: Alérgico al pollo."></textarea>
             </div>
+
             <div class="form-group">
                 <label><i class="fas fa-camera"></i> Foto de tu mascota</label>
                 <div class="file-input-wrapper">
@@ -99,14 +113,17 @@
                     <input type="file" id="fotoFile" accept="image/*">
                 </div>
             </div>
+
             <div class="form-group">
                 <label><i class="fas fa-map-marker-alt"></i> Ubicación</label>
                 <input type="text" id="hogar" placeholder="Ej: Miraflores, Lima">
             </div>
+
             <div class="form-group">
                 <label><i class="fas fa-lock"></i> Clave para editar</label>
                 <input type="password" id="password" placeholder="Crea tu clave" required>
             </div>
+
             <button type="submit" id="btnEnviar" class="btn-save">GUARDAR Y ACTIVAR</button>
             <p class="pass-info">Esta clave te servirá para actualizar datos luego.</p>
         </form>
@@ -130,25 +147,35 @@
         document.getElementById('petForm').onsubmit = async function(e) {
             e.preventDefault();
             if (!petId) { alert("Error: ID no encontrado."); return; }
+            
             const btn = document.getElementById('btnEnviar');
             const file = document.getElementById('fotoFile').files[0];
+            
+            // Lógica para unir el prefijo 51 con el número ingresado
+            const numeroIngresado = document.getElementById('whatsapp').value.trim();
+            const whatsappCompleto = "51" + numeroIngresado;
+
             btn.innerHTML = '<i class="fas fa-paw fa-spin"></i> Activando...';
             btn.disabled = true;
+            
             let finalUrl = "https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png";
+            
             try {
                 if (file) {
                     const storageRef = storage.ref('fotos/' + petId);
                     await storageRef.put(file);
                     finalUrl = await storageRef.getDownloadURL();
                 }
+                
                 await db.ref('mascotas/' + petId).set({
                     nombre: document.getElementById('nombre').value,
-                    whatsapp: document.getElementById('whatsapp').value,
+                    whatsapp: whatsappCompleto,
                     estado: document.getElementById('estado').value,
                     fotoUrl: finalUrl,
                     hogar: document.getElementById('hogar').value,
                     password: document.getElementById('password').value
                 });
+                
                 window.location.href = "ver.html?id=" + petId; 
             } catch (error) {
                 alert("Error: " + error.message);
