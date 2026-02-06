@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet3D Safe - Registro</title>
+    <title>Pet3D Safe - Registro Internacional</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
@@ -48,12 +48,13 @@
         .form-group { text-align: left; margin-bottom: 15px; }
         label { font-size: 13px; font-weight: bold; color: #718096; margin-left: 10px; margin-bottom: 5px; display: block; }
         
-        /* Estilos para el campo de teléfono con prefijo */
+        /* Estilos para el selector de país y teléfono */
         .phone-input-container { display: flex; gap: 8px; }
-        .prefix-box { 
-            width: 65px; background: #edf2f7; border: 2px solid #edf2f7; 
-            border-radius: 15px; padding: 12px 0; text-align: center;
-            font-size: 14px; font-weight: bold; color: #4a5568;
+        
+        .country-select {
+            width: 100px; background: #edf2f7; border: 2px solid #edf2f7;
+            border-radius: 15px; padding: 12px 5px; text-align: center;
+            font-size: 14px; font-weight: bold; color: #4a5568; cursor: pointer;
         }
 
         input, textarea { 
@@ -96,8 +97,16 @@
             <div class="form-group">
                 <label><i class="fab fa-whatsapp"></i> Tu WhatsApp</label>
                 <div class="phone-input-container">
-                    <div class="prefix-box">+51</div>
-                    <input type="tel" id="whatsapp" placeholder="999888777" maxlength="9" required>
+                    <select id="pais" class="country-select">
+                        <option value="51">🇵🇪 +51</option>
+                        <option value="57">🇨🇴 +57</option>
+                        <option value="56">🇨🇱 +56</option>
+                        <option value="593">🇪🇨 +593</option>
+                        <option value="52">🇲🇽 +52</option>
+                        <option value="1">🇺🇸 +1</option>
+                        <option value="34">🇪🇸 +34</option>
+                    </select>
+                    <input type="tel" id="whatsapp" placeholder="Número" required>
                 </div>
             </div>
 
@@ -151,9 +160,10 @@
             const btn = document.getElementById('btnEnviar');
             const file = document.getElementById('fotoFile').files[0];
             
-            // Lógica para unir el prefijo 51 con el número ingresado
+            // Lógica para unir el prefijo del país seleccionado con el número
+            const prefijo = document.getElementById('pais').value;
             const numeroIngresado = document.getElementById('whatsapp').value.trim();
-            const whatsappCompleto = "51" + numeroIngresado;
+            const whatsappCompleto = prefijo + numeroIngresado;
 
             btn.innerHTML = '<i class="fas fa-paw fa-spin"></i> Activando...';
             btn.disabled = true;
