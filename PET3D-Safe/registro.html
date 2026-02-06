@@ -7,41 +7,116 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #eef2f7; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .card { background: white; border-radius: 25px; padding: 25px; width: 85%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
-        .logo { width: 150px; margin-bottom: 15px; }
-        h2 { color: #2d3436; margin-bottom: 20px; }
-        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-family: inherit; }
-        .btn-save { background: #25d366; color: white; border: none; width: 100%; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
-        .btn-save:disabled { background: #ccc; }
-        .pass-info { font-size: 11px; color: #666; margin-bottom: 5px; text-align: left; padding-left: 5px; }
-        .foto-label { display: block; text-align: left; font-size: 12px; color: #2d3436; margin-top: 10px; font-weight: bold; }
+        :root {
+            --primary: #25d366;
+            --secondary: #4b7bec;
+            --bg: #eef2f7;
+            --text: #2d3436;
+            --accent: #ffcc00;
+        }
+        body { 
+            background-color: var(--bg); 
+            background-image: url("https://www.transparenttextures.com/patterns/paws.png"); 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; padding: 20px;
+        }
+        .card { 
+            background: white; border-radius: 35px; 
+            padding: 35px; width: 100%; max-width: 400px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12); 
+            text-align: center; border: 1px solid rgba(255,255,255,0.3);
+        }
+        .logo { width: 160px; margin-bottom: 10px; }
+        h2 { color: var(--text); font-size: 24px; font-weight: 800; margin-bottom: 25px; }
+        
+        .form-group { text-align: left; margin-bottom: 15px; }
+        label { font-size: 13px; font-weight: bold; color: #718096; margin-left: 10px; margin-bottom: 5px; display: block; }
+        
+        input, textarea { 
+            width: 100%; padding: 14px 18px; border: 2px solid #edf2f7; 
+            border-radius: 18px; box-sizing: border-box; 
+            font-family: inherit; font-size: 15px; transition: border-color 0.3s;
+            background: #f8f9fa;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--secondary); background: white; }
+        
+        /* Estilo para el input de archivo */
+        .file-input-wrapper {
+            position: relative; overflow: hidden; display: inline-block; width: 100%;
+            margin-top: 5px;
+        }
+        .btn-file {
+            background: #f1f5f9; border: 2px dashed #cbd5e0; color: #4a5568;
+            padding: 12px; border-radius: 18px; width: 100%; display: block;
+            cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.3s;
+        }
+        .btn-file:hover { background: #e2e8f0; border-color: var(--secondary); }
+        input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; }
+
+        .btn-save { 
+            background: var(--primary); color: white; border: none; 
+            width: 100%; padding: 18px; border-radius: 20px; 
+            font-weight: 800; cursor: pointer; margin-top: 25px; 
+            font-size: 16px; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+        }
+        .btn-save:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(37, 211, 102, 0.3); }
+        .btn-save:disabled { background: #cbd5e0; transform: none; box-shadow: none; }
+
+        .pass-info { 
+            font-size: 11px; color: #a0aec0; margin-top: 15px; 
+            text-align: center; font-style: italic;
+        }
     </style>
 </head>
 <body>
     <div class="card">
         <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" class="logo">
         <h2>Activar Medalla 🐾</h2>
+        
         <form id="petForm">
-            <input type="text" id="nombre" placeholder="Nombre de tu mascota" required>
-            <input type="tel" id="whatsapp" placeholder="Tu WhatsApp (ej: 51992849437)" required>
-            <textarea id="estado" placeholder="Notas importantes (ej: Alergias, carácter o dirección)"></textarea>
+            <div class="form-group">
+                <label><i class="fas fa-dog"></i> Nombre de tu mascota</label>
+                <input type="text" id="nombre" placeholder="Ej: Trico" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fab fa-whatsapp"></i> Tu WhatsApp</label>
+                <input type="tel" id="whatsapp" placeholder="Ej: 51992849437" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-sticky-note"></i> Notas importantes</label>
+                <textarea id="estado" rows="2" placeholder="Alergias, carácter o dirección"></textarea>
+            </div>
             
-            <label class="foto-label">📸 Sube la foto de tu mascota:</label>
-            <input type="file" id="fotoFile" accept="image/*">
+            <div class="form-group">
+                <label><i class="fas fa-camera"></i> Foto de tu mascota</label>
+                <div class="file-input-wrapper">
+                    <button class="btn-file" type="button" id="fileBtn"><i class="fas fa-upload"></i> Seleccionar Foto</button>
+                    <input type="file" id="fotoFile" accept="image/*">
+                </div>
+            </div>
             
-            <input type="text" id="hogar" placeholder="Distrito o Ciudad">
+            <div class="form-group">
+                <label><i class="fas fa-map-marker-alt"></i> Ubicación (Distrito/Ciudad)</label>
+                <input type="text" id="hogar" placeholder="Ej: La Molina, Lima">
+            </div>
             
-            <div class="pass-info">🔒 Crea una clave para editar tus datos luego:</div>
-            <input type="password" id="password" placeholder="Tu clave de seguridad" required>
-            
+            <div class="form-group">
+                <label><i class="fas fa-lock"></i> Clave de seguridad (para editar)</label>
+                <input type="password" id="password" placeholder="Crea tu clave" required>
+            </div>
+
             <button type="submit" id="btnEnviar" class="btn-save">GUARDAR Y ACTIVAR</button>
+            <p class="pass-info">Esta clave te permitirá actualizar los datos en el futuro.</p>
         </form>
     </div>
 
     <script>
-        // Configuración con tu nuevo Storage Bucket del Plan Blaze
         const firebaseConfig = { 
             databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com/",
             storageBucket: "pet3d-safe.firebasestorage.app" 
@@ -54,6 +129,11 @@
         const urlParams = new URLSearchParams(window.location.search);
         const petId = urlParams.get('id');
 
+        // Mostrar nombre del archivo seleccionado
+        document.getElementById('fotoFile').onchange = function() {
+            if(this.files[0]) document.getElementById('fileBtn').innerText = "✅ Foto seleccionada";
+        };
+
         document.getElementById('petForm').onsubmit = async function(e) {
             e.preventDefault();
             if (!petId) { alert("Error: Escanea la medalla nuevamente."); return; }
@@ -61,21 +141,18 @@
             const btn = document.getElementById('btnEnviar');
             const file = document.getElementById('fotoFile').files[0];
             
-            btn.innerText = "Subiendo datos...";
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo datos...';
             btn.disabled = true;
 
-            // Imagen por defecto si no suben nada
             let finalUrl = "https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png";
 
             try {
-                // 1. Si hay archivo, lo subimos a Firebase Storage
                 if (file) {
                     const storageRef = storage.ref('fotos/' + petId);
                     await storageRef.put(file);
                     finalUrl = await storageRef.getDownloadURL();
                 }
 
-                // 2. Guardamos toda la información en Realtime Database
                 const data = {
                     nombre: document.getElementById('nombre').value,
                     whatsapp: document.getElementById('whatsapp').value,
@@ -87,7 +164,6 @@
 
                 await db.ref('mascotas/' + petId).set(data);
                 
-                alert("¡Excelente! Medalla activada."); 
                 window.location.href = "ver.html?id=" + petId; 
 
             } catch (error) {
