@@ -9,26 +9,43 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #25d366;
-            --secondary: #4b7bec;
-            --bg: #eef2f7;
-            --text: #2d3436;
-            --accent: #ffcc00;
-        }
-        body { 
-            background-color: var(--bg); 
-            background-image: url("https://www.transparenttextures.com/patterns/paws.png"); 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; margin: 0; padding: 20px;
-        }
-        .card { 
-            background: white; border-radius: 35px; 
-            padding: 35px; width: 100%; max-width: 400px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12); 
-            text-align: center; border: 1px solid rgba(255,255,255,0.3);
-        }
+    :root {
+        --primary: #25d366;
+        --secondary: #4b7bec;
+        --bg-mint: #e8f5f1; 
+        --text-dark: #2d3436;
+    }
+    
+    body { 
+        background-color: var(--bg-mint); 
+        /* Usamos tu nuevo fondo tileable */
+        background-image: url("https://ricaldeart.github.io/Pet3D/PET3D-Safe/fondo-tile.png"); 
+        background-size: 150px; 
+        background-repeat: repeat;
+        font-family: 'Segoe UI', Roboto, sans-serif; 
+        display: flex; justify-content: center; align-items: center; 
+        min-height: 100vh; margin: 0; padding: 20px;
+        position: relative;
+    }
+
+    /* Capa para suavizar el fondo y que el formulario resalte */
+    body::before {
+        content: "";
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(232, 245, 241, 0.85); 
+        z-index: -1;
+    }
+
+    .card { 
+        background: white; border-radius: 35px; 
+        padding: 35px; width: 100%; max-width: 400px; 
+        box-shadow: 0 20px 40px rgba(0,0,0,0.12); 
+        text-align: center; border: 1px solid rgba(255,255,255,0.3);
+        z-index: 1; /* Para que esté sobre la capa before */
+    }
+    
+    /* ... el resto de tus estilos de inputs y botones se mantienen igual ... */
+</style>
         .logo { width: 160px; margin-bottom: 10px; }
         h2 { color: var(--text); font-size: 24px; font-weight: 800; margin-bottom: 25px; }
         
