@@ -48,7 +48,6 @@
         .form-group { text-align: left; margin-bottom: 15px; }
         label { font-size: 13px; font-weight: bold; color: #718096; margin-left: 10px; margin-bottom: 5px; display: block; }
         
-        /* Estilos para el selector de país y teléfono */
         .phone-input-container { display: flex; gap: 8px; }
         
         .country-select {
@@ -105,6 +104,8 @@
                         <option value="52">🇲🇽 +52</option>
                         <option value="1">🇺🇸 +1</option>
                         <option value="34">🇪🇸 +34</option>
+                        <option value="49">🇩🇪 +49</option>
+                        <option value="">🌐 Otro</option>
                     </select>
                     <input type="tel" id="whatsapp" placeholder="Número" required>
                 </div>
@@ -160,7 +161,6 @@
             const btn = document.getElementById('btnEnviar');
             const file = document.getElementById('fotoFile').files[0];
             
-            // Lógica para unir el prefijo del país seleccionado con el número
             const prefijo = document.getElementById('pais').value;
             const numeroIngresado = document.getElementById('whatsapp').value.trim();
             const whatsappCompleto = prefijo + numeroIngresado;
