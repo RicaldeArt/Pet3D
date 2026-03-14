@@ -41,6 +41,14 @@
         .form-group { text-align: left; margin-bottom: 15px; }
         label { font-size: 13px; font-weight: bold; color: #718096; margin-left: 10px; display: block; }
         
+        /* Estilos para el selector de país */
+        .phone-input-container { display: flex; gap: 8px; margin-top: 5px; }
+        .country-select {
+            width: 100px; background: #edf2f7; border: 2px solid #edf2f7;
+            border-radius: 15px; padding: 12px 5px; text-align: center;
+            font-size: 14px; font-weight: bold; color: #4a5568; cursor: pointer;
+        }
+
         input, textarea { 
             width: 100%; padding: 12px 15px; border: 2px solid #edf2f7; 
             border-radius: 15px; box-sizing: border-box; font-size: 14px;
@@ -71,7 +79,20 @@
         
         <div class="form-group">
             <label><i class="fab fa-whatsapp"></i> WhatsApp Registrado</label>
-            <input type="tel" id="loginWhatsapp" placeholder="Ej: 51991337872">
+            <div class="phone-input-container">
+                <select id="pais" class="country-select">
+                    <option value="51">🇵🇪 +51</option>
+                    <option value="57">🇨🇴 +57</option>
+                    <option value="56">🇨🇱 +56</option>
+                    <option value="593">🇪🇨 +593</option>
+                    <option value="52">🇲🇽 +52</option>
+                    <option value="1">🇺🇸 +1</option>
+                    <option value="34">🇪🇸 +34</option>
+                    <option value="49">🇩🇪 +49</option>
+                    <option value="">🌐 Otro</option>
+                </select>
+                <input type="tel" id="loginWhatsapp" placeholder="Número">
+            </div>
         </div>
 
         <div class="form-group">
@@ -108,7 +129,6 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN EXTRAÍDA DE TU REGISTRO.HTML
         const firebaseConfig = { 
             databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com/",
             storageBucket: "pet3d-safe.firebasestorage.app" 
@@ -120,11 +140,13 @@
         let datosMascota = null;
 
         function verificarUsuario() {
-            const wa = document.getElementById('loginWhatsapp').value.trim();
+            const prefijo = document.getElementById('pais').value;
+            const numeroIngresado = document.getElementById('loginWhatsapp').value.trim();
+            const wa = prefijo + numeroIngresado; // Juntamos país + número
             const pw = document.getElementById('loginPass').value.trim();
             const btn = document.querySelector('.btn-access');
 
-            if(!wa || !pw) { alert("Ingresa tus datos"); return; }
+            if(!numeroIngresado || !pw) { alert("Ingresa tus datos"); return; }
             
             btn.innerText = "Verificando...";
             
@@ -173,9 +195,8 @@
                 fecha: new Date().toLocaleString()
             };
 
-            // Guardamos en un nuevo nodo 'emergencias'
             db.ref('emergencias').push(reporte).then(() => {
-                alert("¡REPORTE ENVIADO! Pet3D Safe ha recibido la alerta. Nos comunicaremos contigo y activaremos la red en tu distrito.");
+                alert("¡REPORTE ENVIADO! Pet3D Safe ha recibido la alerta.");
                 location.reload();
             }).catch((err) => {
                 alert("Error al enviar: " + err.message);
