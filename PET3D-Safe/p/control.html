@@ -41,7 +41,6 @@
         .form-group { text-align: left; margin-bottom: 15px; }
         label { font-size: 13px; font-weight: bold; color: #718096; margin-left: 10px; display: block; }
         
-        /* Estilos para el selector de país */
         .phone-input-container { display: flex; gap: 8px; margin-top: 5px; }
         .country-select {
             width: 100px; background: #edf2f7; border: 2px solid #edf2f7;
@@ -87,9 +86,6 @@
                     <option value="593">🇪🇨 +593</option>
                     <option value="52">🇲🇽 +52</option>
                     <option value="1">🇺🇸 +1</option>
-                    <option value="34">🇪🇸 +34</option>
-                    <option value="49">🇩🇪 +49</option>
-                    <option value="">🌐 Otro</option>
                 </select>
                 <input type="tel" id="loginWhatsapp" placeholder="Número">
             </div>
@@ -97,7 +93,7 @@
 
         <div class="form-group">
             <label><i class="fas fa-lock"></i> Tu Clave</label>
-            <input type="password" id="loginPass" placeholder="Tu clave para editar">
+            <input type="password" id="loginPass" placeholder="Tu clave">
         </div>
 
         <button class="btn-access" onclick="verificarUsuario()">ENTRAR</button>
@@ -106,26 +102,26 @@
     <div class="card hidden" id="panelCard">
         <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" class="logo" style="width: 80px;">
         <div class="pet-name-display" id="petName">--</div>
-        <h3 style="color: var(--emergency); margin: 0;">🚨 ACTIVAR RED DE APOYO</h3>
-        <p style="font-size: 13px; color: #666;">Completa los detalles de la pérdida:</p>
+        <h3 style="color: var(--emergency); margin: 0;">🚨 ACTIVAR ALERTA SAFE</h3>
+        <p style="font-size: 13px; color: #666;">Completa los detalles para ayudarte:</p>
         
         <div class="form-group">
-            <label><i class="fas fa-map-marker-alt"></i> ¿Dónde se vio por última vez?</label>
-            <input type="text" id="lugarPerdida" placeholder="Ej: Parque Kennedy, Miraflores">
+            <label><i class="fas fa-map-marker-alt"></i> ¿Dónde se perdió?</label>
+            <input type="text" id="lugarPerdida" placeholder="Ej: Parque Kennedy">
         </div>
 
         <div class="form-group">
-            <label><i class="fas fa-clock"></i> ¿A qué hora ocurrió?</label>
+            <label><i class="fas fa-clock"></i> ¿A qué hora fue?</label>
             <input type="time" id="horaPerdida">
         </div>
 
         <div class="form-group">
             <label><i class="fas fa-info-circle"></i> Datos adicionales</label>
-            <textarea id="detallesPerdida" rows="3" placeholder="Ej: Huyó hacia la Av. Larco, lleva pechera azul."></textarea>
+            <textarea id="detallesPerdida" rows="3" placeholder="Ej: Vestía pechera roja..."></textarea>
         </div>
 
-        <button class="btn-alert" id="btnEnviarAlerta" onclick="enviarAlerta()">ENVIAR REPORTE</button>
-        <button style="background:none; border:none; color:#999; margin-top:15px; cursor:pointer;" onclick="location.reload()">Cerrar Sesión</button>
+        <button class="btn-alert" id="btnEnviarAlerta" onclick="enviarAlerta()">ENVIAR REPORTE Y CONTACTAR</button>
+        <p style="font-size: 11px; color: #999; margin-top: 10px;">Se abrirá un chat de WhatsApp con el soporte de Pet3D SAFE.</p>
     </div>
 
     <script>
@@ -142,12 +138,11 @@
         function verificarUsuario() {
             const prefijo = document.getElementById('pais').value;
             const numeroIngresado = document.getElementById('loginWhatsapp').value.trim();
-            const wa = prefijo + numeroIngresado; // Juntamos país + número
+            const wa = prefijo + numeroIngresado;
             const pw = document.getElementById('loginPass').value.trim();
             const btn = document.querySelector('.btn-access');
 
             if(!numeroIngresado || !pw) { alert("Ingresa tus datos"); return; }
-            
             btn.innerText = "Verificando...";
             
             db.ref('mascotas').once('value', (snapshot) => {
@@ -162,11 +157,11 @@
                 });
 
                 if(encontrado) {
-                    document.getElementById('petName').innerText = datosMascota.nombre;
+                    document.getElementById('petName').innerText = "Panel de " + datosMascota.nombre;
                     document.getElementById('loginCard').classList.add('hidden');
                     document.getElementById('panelCard').classList.remove('hidden');
                 } else {
-                    alert("Datos incorrectos. Verifica tu WhatsApp y Clave.");
+                    alert("Datos incorrectos.");
                     btn.innerText = "ENTRAR";
                 }
             });
@@ -181,27 +176,40 @@
             if(!lugar || !hora) { alert("Por favor indica lugar y hora."); return; }
 
             btn.disabled = true;
-            btn.innerText = "Enviando...";
+            btn.innerText = "Guardando...";
 
             const reporte = {
                 idMascota: idMascotaActual,
                 nombre: datosMascota.nombre,
                 dueñoWhatsapp: datosMascota.whatsapp,
-                distritoOriginal: datosMascota.hogar,
                 lugarIncidente: lugar,
                 horaIncidente: hora,
                 detalles: detalles,
-                timestamp: Date.now(),
                 fecha: new Date().toLocaleString()
             };
 
+            // 1. Guardar en Firebase
             db.ref('emergencias').push(reporte).then(() => {
-                alert("¡REPORTE ENVIADO! Pet3D Safe ha recibido la alerta.");
-                location.reload();
+                
+                // 2. Preparar mensaje de WhatsApp para TI (51992849437)
+                const miTelefono = "51992849437";
+                const mensaje = `🚨 *ALERTA PET3D SAFE* 🚨\n\n` +
+                                `¡Acabo de reportar que mi mascota se ha perdido!\n\n` +
+                                `🐾 *Mascota:* ${datosMascota.nombre}\n` +
+                                `📍 *Lugar:* ${lugar}\n` +
+                                `⏰ *Hora:* ${hora}\n` +
+                                `📝 *Detalles:* ${detalles}\n\n` +
+                                `Por favor, activen la red de apoyo.`;
+                
+                const whatsappUrl = `https://wa.me/${miTelefono}?text=${encodeURIComponent(mensaje)}`;
+                
+                // 3. Abrir WhatsApp y reiniciar
+                alert("Reporte guardado. Ahora se abrirá WhatsApp para contactar con soporte.");
+                window.location.href = whatsappUrl;
+
             }).catch((err) => {
-                alert("Error al enviar: " + err.message);
+                alert("Error: " + err.message);
                 btn.disabled = false;
-                btn.innerText = "ENVIAR REPORTE";
             });
         }
     </script>
