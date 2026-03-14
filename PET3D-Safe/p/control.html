@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Pet3D Safe</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #25d366;
+            --emergency: #d32f2f;
+            --bg-mint: #e8f5f1; 
+            --text-dark: #2d3436;
+        }
+        
+        body { 
+            background-color: var(--bg-mint); 
+            background-image: url("https://ricaldeart.github.io/Pet3D/PET3D-Safe/fondo-tile.png"); 
+            background-size: 150px; 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; padding: 20px;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(232, 245, 241, 0.85); z-index: -1;
+        }
+
+        .card { 
+            background: white; border-radius: 35px; padding: 30px; 
+            width: 100%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); 
+            text-align: center; z-index: 1;
+        }
+
+        .logo { width: 150px; margin-bottom: 10px; }
+        h2 { color: var(--text-dark); font-size: 22px; margin-bottom: 20px; }
+        
+        .form-group { text-align: left; margin-bottom: 15px; }
+        label { font-size: 13px; font-weight: bold; color: #718096; margin-left: 10px; display: block; }
+        
+        input, textarea { 
+            width: 100%; padding: 12px 15px; border: 2px solid #edf2f7; 
+            border-radius: 15px; box-sizing: border-box; font-size: 14px;
+            background: #f8f9fa; margin-top: 5px;
+        }
+
+        .btn-access { 
+            background: var(--text-dark); color: white; border: none; 
+            width: 100%; padding: 16px; border-radius: 20px; 
+            font-weight: 800; cursor: pointer; margin-top: 10px; font-size: 16px;
+        }
+
+        .btn-alert { 
+            background: var(--emergency); color: white; border: none; 
+            width: 100%; padding: 16px; border-radius: 20px; 
+            font-weight: 800; cursor: pointer; margin-top: 20px; font-size: 16px;
+        }
+
+        .hidden { display: none; }
+        .pet-name-display { color: #ff6600; font-size: 24px; font-weight: 800; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="loginCard">
+        <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" class="logo">
+        <h2>Panel de Control</h2>
+        
+        <div class="form-group">
+            <label><i class="fab fa-whatsapp"></i> WhatsApp Registrado</label>
+            <input type="tel" id="loginWhatsapp" placeholder="Ej: 51991337872">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-lock"></i> Tu Clave</label>
+            <input type="password" id="loginPass" placeholder="Tu clave para editar">
+        </div>
+
+        <button class="btn-access" onclick="verificarUsuario()">ENTRAR</button>
+    </div>
+
+    <div class="card hidden" id="panelCard">
+        <img src="https://ricaldeart.github.io/Pet3D/PET3D-Safe/logo-web.png" class="logo" style="width: 80px;">
+        <div class="pet-name-display" id="petName">--</div>
+        <h3 style="color: var(--emergency); margin: 0;">🚨 ACTIVAR RED DE APOYO</h3>
+        <p style="font-size: 13px; color: #666;">Completa los detalles de la pérdida:</p>
+        
+        <div class="form-group">
+            <label><i class="fas fa-map-marker-alt"></i> ¿Dónde se vio por última vez?</label>
+            <input type="text" id="lugarPerdida" placeholder="Ej: Parque Kennedy, Miraflores">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-clock"></i> ¿A qué hora ocurrió?</label>
+            <input type="time" id="horaPerdida">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-info-circle"></i> Datos adicionales</label>
+            <textarea id="detallesPerdida" rows="3" placeholder="Ej: Huyó hacia la Av. Larco, lleva pechera azul."></textarea>
+        </div>
+
+        <button class="btn-alert" id="btnEnviarAlerta" onclick="enviarAlerta()">ENVIAR REPORTE</button>
+        <button style="background:none; border:none; color:#999; margin-top:15px; cursor:pointer;" onclick="location.reload()">Cerrar Sesión</button>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN EXTRAÍDA DE TU REGISTRO.HTML
+        const firebaseConfig = { 
+            databaseURL: "https://pet3d-safe-default-rtdb.firebaseio.com/",
+            storageBucket: "pet3d-safe.firebasestorage.app" 
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let idMascotaActual = null;
+        let datosMascota = null;
+
+        function verificarUsuario() {
+            const wa = document.getElementById('loginWhatsapp').value.trim();
+            const pw = document.getElementById('loginPass').value.trim();
+            const btn = document.querySelector('.btn-access');
+
+            if(!wa || !pw) { alert("Ingresa tus datos"); return; }
+            
+            btn.innerText = "Verificando...";
+            
+            db.ref('mascotas').once('value', (snapshot) => {
+                let encontrado = false;
+                snapshot.forEach((child) => {
+                    const data = child.val();
+                    if(data.whatsapp === wa && data.password === pw) {
+                        encontrado = true;
+                        idMascotaActual = child.key;
+                        datosMascota = data;
+                    }
+                });
+
+                if(encontrado) {
+                    document.getElementById('petName').innerText = datosMascota.nombre;
+                    document.getElementById('loginCard').classList.add('hidden');
+                    document.getElementById('panelCard').classList.remove('hidden');
+                } else {
+                    alert("Datos incorrectos. Verifica tu WhatsApp y Clave.");
+                    btn.innerText = "ENTRAR";
+                }
+            });
+        }
+
+        function enviarAlerta() {
+            const lugar = document.getElementById('lugarPerdida').value;
+            const hora = document.getElementById('horaPerdida').value;
+            const detalles = document.getElementById('detallesPerdida').value;
+            const btn = document.getElementById('btnEnviarAlerta');
+
+            if(!lugar || !hora) { alert("Por favor indica lugar y hora."); return; }
+
+            btn.disabled = true;
+            btn.innerText = "Enviando...";
+
+            const reporte = {
+                idMascota: idMascotaActual,
+                nombre: datosMascota.nombre,
+                dueñoWhatsapp: datosMascota.whatsapp,
+                distritoOriginal: datosMascota.hogar,
+                lugarIncidente: lugar,
+                horaIncidente: hora,
+                detalles: detalles,
+                timestamp: Date.now(),
+                fecha: new Date().toLocaleString()
+            };
+
+            // Guardamos en un nuevo nodo 'emergencias'
+            db.ref('emergencias').push(reporte).then(() => {
+                alert("¡REPORTE ENVIADO! Pet3D Safe ha recibido la alerta. Nos comunicaremos contigo y activaremos la red en tu distrito.");
+                location.reload();
+            }).catch((err) => {
+                alert("Error al enviar: " + err.message);
+                btn.disabled = false;
+                btn.innerText = "ENVIAR REPORTE";
+            });
+        }
+    </script>
+</body>
+</html>
